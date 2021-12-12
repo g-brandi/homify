@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Homify">
         <activity
+            android:name=".Sensor1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".SvegliaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserHomeActivity"
             android:exported="false" />
         <activity
