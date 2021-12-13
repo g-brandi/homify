@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -17,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Set;
 import java.util.UUID;
 
 public class UserHomeActivity extends AppCompatActivity {
@@ -48,8 +51,8 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: inserire MAC address del bluetooth di arduino e controllare che funzioni
 
+        // Bluetooth
         tgbBluetooth = findViewById(R.id.tgbBluetooth);
         // evento: tap sul togglebutton per la connessione del bluetooth
         tgbBluetooth.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +63,7 @@ public class UserHomeActivity extends AppCompatActivity {
                     if (mBluetoothAdapter != null) {
                         //control that bluetooth is enabled
                         if (mBluetoothAdapter.isEnabled()) {
-                            mmDevice = mBluetoothAdapter.getRemoteDevice(<MAC>); //MAC address del bluetooth di arduino
+                            mmDevice = mBluetoothAdapter.getRemoteDevice("MAC"); // TODO: MAC address del bluetooth di arduino da inserire
                             try {
                                 //bluetooth connection
                                 mmSocket = mmDevice.createRfcommSocketToServiceRecord(uuid);
@@ -91,8 +94,6 @@ public class UserHomeActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
     }
 
