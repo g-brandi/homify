@@ -16,8 +16,6 @@
         <activity
             android:name=".Sensor1Activity"
             android:exported="false" />
-        <activity android:name=".GoogleSignInActivity"
-            android:exported="false"/>
         <activity
             android:name=".SvegliaActivity"
             android:exported="false" />
@@ -26,9 +24,6 @@
             android:exported="false" />
         <activity
             android:name=".UserHomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EmailPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
