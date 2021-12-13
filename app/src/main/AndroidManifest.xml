@@ -16,6 +16,8 @@
         <activity
             android:name=".Sensor1Activity"
             android:exported="false" />
+        <activity android:name=".GoogleSignInActivity"
+            android:exported="false"/>
         <activity
             android:name=".SvegliaActivity"
             android:exported="false" />
