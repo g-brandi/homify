@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +24,9 @@ public class EmailPasswordActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
+    private TextView email;
+    private TextView password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +36,25 @@ public class EmailPasswordActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+        email = findViewById(R.id.txtEmail);
+        password = findViewById(R.id.txtPassword);
+
+        findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn(email.toString(), password.toString());
+            }
+        });
+
+        findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createAccount(email.toString(), password.toString());
+            }
+        });
+
+
     }
 
     // [START on_start_check_user]
@@ -38,9 +63,7 @@ public class EmailPasswordActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            reload();
-        }
+        updateUI(currentUser);
     }
     // [END on_start_check_user]
 
