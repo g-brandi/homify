@@ -23,7 +23,7 @@ public class EmailPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_email_password);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
