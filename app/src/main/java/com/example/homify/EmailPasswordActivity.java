@@ -3,6 +3,7 @@ package com.example.homify;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -69,6 +70,12 @@ public class EmailPasswordActivity extends AppCompatActivity {
     private void reload() { }
 
     private void updateUI(FirebaseUser user) {
+        if(user!=null){
+            Intent intent = new Intent(getApplicationContext(),UserHomeActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(EmailPasswordActivity.this, "Sorry auth failed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

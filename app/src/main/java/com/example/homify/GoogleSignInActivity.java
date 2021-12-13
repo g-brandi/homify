@@ -53,6 +53,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
 
+        // TODO: far inserire il bottone google_signIn nel file xml
         findViewById(R.id.google_signIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
