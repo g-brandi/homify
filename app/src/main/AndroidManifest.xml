@@ -28,9 +28,6 @@
             android:name=".UserHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
             android:name=".EmailPasswordActivity"
             android:exported="false" />
         <activity
