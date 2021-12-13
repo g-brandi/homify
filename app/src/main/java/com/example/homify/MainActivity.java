@@ -30,8 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnGoogle;
     private Button btnEmailPassword;
     private Button btnRegister;
+
     private TextView email;
     private TextView password;
+    private TextView passwordRepeat;
 
     private static final int RC_SIGN_IN = 9001;
 
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         email = findViewById(R.id.txtEmail);
         password = findViewById(R.id.txtPassword);
+        passwordRepeat = findViewById(R.id.txtPasswordRepeat);
 
         // [START config_signin]
         // Configure Google Sign In
@@ -89,10 +92,17 @@ public class MainActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    createAccount(email.getText().toString(), password.getText().toString());
-                } catch (java.lang.IllegalArgumentException exception) {
-                    Toast.makeText(MainActivity.this, "Complilare entrambe le celle", Toast.LENGTH_SHORT).show();
+                if (!email.getText().toString().equals("") && !password.getText().toString().equals("")) {
+                    passwordRepeat.setVisibility(View.VISIBLE);
+                }
+                if (passwordRepeat.getText().toString().equals(password.getText().toString())) {
+                    try {
+                        createAccount(email.getText().toString(), password.getText().toString());
+                    } catch (java.lang.IllegalArgumentException exception) {
+                        Toast.makeText(MainActivity.this, "Complilare entrambe le celle", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Reinserire la stessa password [deve essere di almeno 6 caratteri]", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -174,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("EmailPasswordLogin", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "L'indirizzo email è già utilizzato da un altro account",
+                            Toast.makeText(MainActivity.this, "L'indirizzo email è già utilizzato da un altro account o la password fornita è ivalida",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -198,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("EmailPasswordLogin", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "La password non è valida o non ci sono utenti registrati con questa email",
+                            Toast.makeText(MainActivity.this, "La password è errata o non ci sono utenti registrati con questa email",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
