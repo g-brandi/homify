@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -50,6 +52,13 @@ public class GoogleSignInActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+        findViewById(R.id.google_signIn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
     }
 
     // [START on_start_check_user]
@@ -78,6 +87,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -113,6 +123,11 @@ public class GoogleSignInActivity extends AppCompatActivity {
     // [END signin]
 
     private void updateUI(FirebaseUser user) {
-
+        if(user!=null){
+            Intent intent = new Intent(getApplicationContext(),UserHomeActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(GoogleSignInActivity.this, "Sorry auth failed.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
