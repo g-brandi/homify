@@ -43,14 +43,14 @@ public class EmailPasswordActivity extends AppCompatActivity {
         findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn(email.toString(), password.toString());
+                signIn(email.getText().toString(), password.getText().toString());
             }
         });
 
         findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createAccount(email.toString(), password.toString());
+                createAccount(email.getText().toString(), password.getText().toString());
             }
         });
 
