@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.internal.Objects;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -77,14 +78,22 @@ public class MainActivity extends AppCompatActivity {
         btnEmailPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn(email.getText().toString(), password.getText().toString());
+                try {
+                    signIn(email.getText().toString(), password.getText().toString());
+                } catch (java.lang.IllegalArgumentException exception) {
+                    Toast.makeText(MainActivity.this, "Complilare entrambe le celle", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createAccount(email.getText().toString(), password.getText().toString());
+                try {
+                    createAccount(email.getText().toString(), password.getText().toString());
+                } catch (java.lang.IllegalArgumentException exception) {
+                    Toast.makeText(MainActivity.this, "Complilare entrambe le celle", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -116,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("GoogleLogin", "Google sign in failed", e);
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Accesso non eseguito", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -165,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("EmailPasswordLogin", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, "L'indirizzo email è già utilizzato da un altro account",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -189,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("EmailPasswordLogin", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, "La password non è valida o non ci sono utenti registrati con questa email",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -202,8 +211,6 @@ public class MainActivity extends AppCompatActivity {
         if(user!=null){
             Intent intent = new Intent(getApplicationContext(),UserHomeActivity.class);
             startActivity(intent);
-        } else {
-            Toast.makeText(MainActivity.this, "Sorry auth failed.", Toast.LENGTH_SHORT).show();
         }
     }
 }
