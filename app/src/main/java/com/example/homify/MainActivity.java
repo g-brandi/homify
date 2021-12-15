@@ -26,6 +26,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button btnGoogle;
@@ -196,8 +198,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertOnDatabaseForGmail() {
-        user = new Utente(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), FirebaseAuth.getInstance().getCurrentUser().getEmail());
-        myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+//        Toast.makeText(MainActivity.this, myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).toString(), Toast.LENGTH_LONG).show();
+//        if (myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            user = new Utente(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+//        }
     }
 }
 

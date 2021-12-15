@@ -16,6 +16,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -35,10 +37,24 @@ public class UserHomeActivity extends AppCompatActivity {
     // dichiarazione variabili per logout
     private Button btnLogout;
 
+    // TODO: aggiunto per prova
+    private Button btnDati;
+    FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
+    DatabaseReference myRef = database.getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
+
+        // TODO: aggiunto per prova
+        btnDati = findViewById(R.id.btnDati);
+        btnDati.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("prova").setValue("prova");
+            }
+        });
 
 
         btnLogout = findViewById(R.id.btnLogout);
