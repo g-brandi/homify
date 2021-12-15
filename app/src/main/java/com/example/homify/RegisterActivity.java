@@ -46,6 +46,11 @@ public class RegisterActivity extends AppCompatActivity {
         repeatPassword = findViewById(R.id.txtRepeatPassowrdRegister);
         btnRegister2 = findViewById(R.id.btnRegister2);
 
+        // [START initialize_auth]
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        // [END initialize_auth]
+
         btnRegister2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
