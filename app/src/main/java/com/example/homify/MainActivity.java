@@ -16,7 +16,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.internal.Objects;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -24,6 +23,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,15 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView email;
     private TextView password;
-    private TextView passwordRepeat;
 
     private static final int RC_SIGN_IN = 9001;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
+    DatabaseReference myRef = database.getReference();
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
+
+    private Utente user;
 
 
     @Override
@@ -54,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         email = findViewById(R.id.txtEmail);
         password = findViewById(R.id.txtPassword);
-        passwordRepeat = findViewById(R.id.txtPasswordRepeat);
 
         // [START config_signin]
         // Configure Google Sign In
@@ -92,18 +96,8 @@ public class MainActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!email.getText().toString().equals("") && !password.getText().toString().equals("")) {
-                    passwordRepeat.setVisibility(View.VISIBLE);
-                }
-                if (passwordRepeat.getText().toString().equals(password.getText().toString())) {
-                    try {
-                        createAccount(email.getText().toString(), password.getText().toString());
-                    } catch (java.lang.IllegalArgumentException exception) {
-                        Toast.makeText(MainActivity.this, "Complilare entrambe le celle", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "Reinserire la stessa password [deve essere di almeno 6 caratteri]", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(getApplicationContext(),RegisterActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -153,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("GoogleLogin", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            insertOnDatabaseForGmail();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("GoogleLogin", "signInWithCredential:failure", task.getException());
@@ -169,30 +164,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     // [END signin]
-
-    private void createAccount(String email, String password) {
-        // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("EmailPasswordLogin", "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("EmailPasswordLogin", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "L'indirizzo email è già utilizzato da un altro account o la password fornita è ivalida",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-                    }
-                });
-        // [END create_user_with_email]
-    }
-
 
     private void signIn(String email, String password) {
         // [START sign_in_with_email]
@@ -223,4 +194,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    private void insertOnDatabaseForGmail() {
+        user = new Utente(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+    }
 }
+

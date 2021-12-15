@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION_LOCATION" />
-
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
     <application
@@ -15,6 +14,9 @@
         android:roundIcon="@drawable/ic_rounded_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Homify">
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
         <activity
             android:name=".Sensor1Activity"
             android:exported="false" />
