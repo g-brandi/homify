@@ -42,6 +42,9 @@ public class UserHomeActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
     DatabaseReference myRef = database.getReference();
 
+    //Schermate
+    private Button btnSensor1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +114,21 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
 
+
+        //Schermate
+        btnSensor1 = findViewById(R.id.btnSensor1);
+        btnSensor1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserHomeActivity.this, Sensor1Activity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
+
+
 
     //funzione per scrivere nella output del bluetooth
     private void outMessage(String message) {

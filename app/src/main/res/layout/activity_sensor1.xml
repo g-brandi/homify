@@ -6,4 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".Sensor1Activity">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="176dp"
+        tools:layout_editor_absoluteY="245dp" />
+
+    <Button
+        android:id="@+id/btnstampa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="500dp">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:adjustViewBounds="true" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
