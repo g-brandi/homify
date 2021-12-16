@@ -198,11 +198,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertOnDatabaseForGmail() {
-//        Toast.makeText(MainActivity.this, myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).toString(), Toast.LENGTH_LONG).show();
-//        if (myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+        String var = myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).toString();
+        String var1 = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+        if (!var.equals("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/users/" + var1)) {
             user = new Utente(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), FirebaseAuth.getInstance().getCurrentUser().getEmail());
             myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-//        }
+        }
     }
 }
 
