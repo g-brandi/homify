@@ -25,9 +25,7 @@ import java.util.List;
 
 public class Sensor1Activity extends AppCompatActivity {
 
-    private HashMap<String,DataTempHum> dataSet;
-    private int sizeOld;
-    private final int iter=1;
+
     private Button btnStampa;
     private List<DataTempHum> dataTempHumList;
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
