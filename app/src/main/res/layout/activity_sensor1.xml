@@ -32,7 +32,7 @@
             android:scaleType="centerInside"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
