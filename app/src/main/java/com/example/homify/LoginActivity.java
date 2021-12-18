@@ -26,6 +26,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.jar.JarOutputStream;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 9001;
@@ -135,8 +137,8 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("GoogleLogin", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
                             insertOnDatabaseForGmail();
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("GoogleLogin", "signInWithCredential:failure", task.getException());
@@ -187,9 +189,11 @@ public class LoginActivity extends AppCompatActivity {
     private void insertOnDatabaseForGmail() {
         String var = myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).toString();
         String var1 = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
-        if (!var.equals("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/users/" + var1)) {
-            user = new Utente(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        //TODO: non funziona l'if
+//        if (!var.equals("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/users/" + var1)) {
+            String[] nome_cognome = FirebaseAuth.getInstance().getCurrentUser().getDisplayName().split(" ");
+            user = new Utente(nome_cognome[0], nome_cognome[1], FirebaseAuth.getInstance().getCurrentUser().getEmail());
             myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-        }
+//        }
     }
 }

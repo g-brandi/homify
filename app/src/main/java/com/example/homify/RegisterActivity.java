@@ -28,7 +28,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
-    private TextView name_surname;
+    private TextView name;
+    private TextView surname;
     private TextView email;
     private TextView password;
     private TextView repeatPassword;
@@ -40,7 +41,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        name_surname = findViewById(R.id.txtNameRegister);
+        name = findViewById(R.id.txtNameRegister);
+        surname = findViewById(R.id.txtSurnameRegister);
         email = findViewById(R.id.txtEmailRegister);
         password = findViewById(R.id.txtPasswordRegister);
         repeatPassword = findViewById(R.id.txtRepeatPassowrdRegister);
@@ -54,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!name_surname.getText().toString().equals("") && !email.getText().toString().equals("")) {
+                if (!name.getText().toString().equals("") && !surname.getText().toString().equals("") &&!email.getText().toString().equals("")) {
                     if (repeatPassword.getText().toString().equals(password.getText().toString())) {
                         try {
                             createAccount(email.getText().toString(), password.getText().toString());
@@ -103,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void insertOnDatabase() {
-        user = new Utente(name_surname.getText().toString(), email.getText().toString());
+        user = new Utente(name.getText().toString(), surname.getText().toString(), email.getText().toString());
         myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
     }
 }

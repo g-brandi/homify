@@ -7,23 +7,47 @@
     tools:context=".RegisterActivity">
 
     <EditText
+        android:id="@+id/txtSurnameRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Surname"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/txtNameRegister"
+        app:layout_constraintStart_toStartOf="@+id/txtNameRegister"
+        app:layout_constraintTop_toBottomOf="@+id/txtNameRegister" />
+
+    <EditText
         android:id="@+id/txtEmailRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="@+id/txtNameRegister"
+        app:layout_constraintEnd_toEndOf="@+id/txtSurnameRegister"
+        app:layout_constraintStart_toStartOf="@+id/txtSurnameRegister"
+        app:layout_constraintTop_toBottomOf="@+id/txtSurnameRegister" />
+
+    <EditText
+        android:id="@+id/txtRepeatPassowrdRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Ripeti Password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/txtPasswordRegister"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtNameRegister"
-        app:layout_constraintTop_toBottomOf="@+id/txtNameRegister" />
+        app:layout_constraintStart_toStartOf="@+id/txtPasswordRegister"
+        app:layout_constraintTop_toBottomOf="@+id/txtPasswordRegister" />
 
     <EditText
         android:id="@+id/txtPasswordRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -47,26 +71,13 @@
         android:id="@+id/txtNameRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="156dp"
+        android:layout_marginTop="80dp"
         android:ems="10"
-        android:hint="Nome e Cognome"
+        android:hint="Nome"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/txtRepeatPassowrdRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Ripeti Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/txtPasswordRegister"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtPasswordRegister"
-        app:layout_constraintTop_toBottomOf="@+id/txtPasswordRegister" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
