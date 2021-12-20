@@ -76,7 +76,7 @@
         android:drawablePadding="16dp"
         android:ems="10"
         android:hint="Cognome"
-        android:inputType="none|textPassword"
+        android:inputType="text"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

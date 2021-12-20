@@ -23,6 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:text="Make your life yours." />
+        android:text="Making your home yours." />
 
 </LinearLayout>

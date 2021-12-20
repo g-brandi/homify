@@ -45,10 +45,12 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnEmailPassword;
 
     private TextView txtRegister;
+    private TextView txtForgotPassword;
 
     private TextView email;
     private TextView password;
 
+    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         btnGoogle = findViewById(R.id.btnGoogle);
         btnEmailPassword = findViewById(R.id.btnEmailPassword);
         txtRegister = findViewById(R.id.txtRegister);
+        txtForgotPassword = findViewById(R.id.txtForgotPassword);
         email = findViewById(R.id.txtEmail);
         password = findViewById(R.id.txtPassword);
 
@@ -99,6 +102,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),RegisterActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!email.getText().toString().equals("")) {
+                    sendPasswordReset();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Inserire la mail per cui reimpostare la password", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -204,5 +218,19 @@ public class LoginActivity extends AppCompatActivity {
             user = new Utente(nome_cognome[0], nome_cognome[1], FirebaseAuth.getInstance().getCurrentUser().getEmail());
             myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
 //        }
+    }
+
+    private void sendPasswordReset() {
+        mAuth.sendPasswordResetEmail(email.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Email sent.");
+                    Toast.makeText(LoginActivity.this, "Email inviata", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "La mail inserita non è registrata", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
