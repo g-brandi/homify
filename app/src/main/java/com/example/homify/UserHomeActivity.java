@@ -1,6 +1,11 @@
 package com.example.homify;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -8,13 +13,16 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,122 +32,157 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
-public class UserHomeActivity extends AppCompatActivity {
+public class UserHomeActivity<OnClick> extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    // dichiarazione variabili per Bluetooth
-    public UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    BluetoothAdapter mBluetoothAdapter=null;
-    BluetoothSocket mmSocket=null;
-    BluetoothDevice mmDevice=null;
-    OutputStream outStream;
-    private ToggleButton tgbBluetooth;
-
-    // dichiarazione variabili per logout
-    private Button btnLogout;
-
-    // TODO: aggiunto per prova
-    private Button btnDati;
-    FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
-    DatabaseReference myRef = database.getReference();
-
-    //Schermate
-    private Button btnSensor1;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    Toolbar toolbar;
+    ImageView imageSveglia;
+    ImageView imageMeteo;
+    ImageView imageTemperatura;
+    ImageView imageUmidita;
+    ImageView imageGrafici;
+    ImageView imageImpostazioni;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
 
-        // TODO: aggiunto per prova
-        btnDati = findViewById(R.id.btnDati);
-        btnDati.setOnClickListener(new View.OnClickListener() {
+        //Hooks//
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
+        imageSveglia = findViewById(R.id.imageView6);
+        imageMeteo = findViewById(R.id.imageView2);
+        imageTemperatura = findViewById(R.id.imageView3);
+        imageUmidita = findViewById(R.id.imageView4);
+        imageGrafici = findViewById(R.id.imageView5);
+        imageImpostazioni = findViewById(R.id.imageView7);
+
+        //BOTTONE SVEGLIA
+        imageSveglia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myRef.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("prova").setValue("prova");
+                // definisco le intenzioni
+                Intent openSveglia = new Intent(UserHomeActivity.this, AlarmClockActivity.class);
+                // passo all'attivazione dell'activity Pagina.java
+                startActivity(openSveglia);
             }
         });
 
-
-        btnLogout = findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        //BOTTONE METEO
+        imageMeteo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent openMeteo = new Intent(UserHomeActivity.this, WeatherActivity.class);
+                startActivity(openMeteo);
+            }
+        });
+
+        //BOTTONE TEMPERATURA
+        imageTemperatura.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openTemperatura = new Intent(UserHomeActivity.this, Sensor1Activity.class);
+                startActivity(openTemperatura);
+            }
+        });
+
+        //BOTTONE UMIDITA
+        imageUmidita.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openUmidita = new Intent(UserHomeActivity.this, Sensor2Activity.class);
+                startActivity(openUmidita);
+            }
+        });
+
+        //BOTTONE GRAFICI
+        imageGrafici.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openGrafici = new Intent(UserHomeActivity.this, GraphsActivity.class);
+                startActivity(openGrafici);
+            }
+        });
+
+        //BOTTONE IMPOSTAZIONI
+        imageImpostazioni.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openImpostazioni = new Intent(UserHomeActivity.this, SettingsActivity.class);
+                startActivity(openImpostazioni);
+            }
+        });
+
+        //Tool Bar//
+        setSupportActionBar(toolbar);
+
+        // Navigation Drawer Menu//
+
+
+        //Nascondi elementi menu
+        //Menu menu=navigationView.getMenu();
+        //menu.findItem(R.id.nav_logout).setVisible(false);
+
+
+        navigationView.bringToFront();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.setCheckedItem(R.id.nav_home);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.nav_home:
+                break;
+            case R.id.nav_sveglia:
+                Intent intentsveglia=new Intent(UserHomeActivity.this,AlarmClockActivity.class);
+                startActivity(intentsveglia);
+                break;
+            case R.id.nav_temperatura:
+                Intent intenttemperatura=new Intent(UserHomeActivity.this,Sensor1Activity.class);
+                startActivity(intenttemperatura);
+                break;
+            case R.id.nav_meteo:
+                Intent intentmeteo=new Intent(UserHomeActivity.this,WeatherActivity.class);
+                startActivity(intentmeteo);
+                break;
+            case R.id.nav_umidita:
+                Intent intentumidita=new Intent(UserHomeActivity.this,Sensor2Activity.class);
+                startActivity(intentumidita);
+                break;
+            case R.id.nav_profile:
+                Intent intentprofilo=new Intent(UserHomeActivity.this,ProfileActivity.class);
+                startActivity(intentprofilo);
+                break;
+            case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(UserHomeActivity.this,MainActivity.class);
                 startActivity(intent);
-            }
-        });
-
-
-        // Bluetooth
-        tgbBluetooth = findViewById(R.id.tgbBluetooth);
-        // evento: tap sul togglebutton per la connessione del bluetooth
-        tgbBluetooth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (tgbBluetooth.isChecked()) { // controlla che sia attivo il toogle button
-                    mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                    if (mBluetoothAdapter != null) {
-                        //control that bluetooth is enabled
-                        if (mBluetoothAdapter.isEnabled()) {
-                            mmDevice = mBluetoothAdapter.getRemoteDevice("MAC"); // TODO: MAC address del bluetooth di arduino da inserire
-                            try {
-                                //bluetooth connection
-                                mmSocket = mmDevice.createRfcommSocketToServiceRecord(uuid);
-                                mmSocket.connect();
-                                outStream = mmSocket.getOutputStream();
-                                Toast.makeText(UserHomeActivity.this, "ON", Toast.LENGTH_SHORT).show();
-                            } catch (IOException e) {
-                                tgbBluetooth.setChecked(false);
-                                Log.i("Bluetooth",e.toString());
-                                try {
-                                    //try to close bluetooth connection
-                                    mmSocket.close();
-                                } catch (IOException ceXC) {
-                                }
-                                Toast.makeText(UserHomeActivity.this, "Bluetooth isn't connect", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(UserHomeActivity.this, "Bluetooth isn't enabled", Toast.LENGTH_LONG).show();
-                            tgbBluetooth.setChecked(false);
-                        }
-                    } //close mBluetoothAdapter!=null
-                } else {
-                    try {
-                        //try to close socket connections
-                        outStream.close();
-                        mmSocket.close();
-                    } catch (IOException ceXC) {}
-                }
-            }
-        });
-
-
-        //Schermate
-        btnSensor1 = findViewById(R.id.btnSensor1);
-        btnSensor1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserHomeActivity.this, Sensor1Activity.class);
-                startActivity(intent);
-            }
-        });
-
-
-    }
-
-
-
-    //funzione per scrivere nella output del bluetooth
-    private void outMessage(String message) {
-        if (outStream == null) {
-            return;
+                break;
+            case R.id.nav_impostazioni:
+                Intent intentimpostazioni=new Intent(UserHomeActivity.this,SettingsActivity.class);
+                startActivity(intentimpostazioni);
+                break;
         }
-        byte[] msgBuffer = message.getBytes();
-        try{
-            outStream.write(msgBuffer);
-        } catch (IOException e){
-            Toast.makeText(UserHomeActivity.this, "Messaggio non Inviato", Toast.LENGTH_SHORT).show();
-        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

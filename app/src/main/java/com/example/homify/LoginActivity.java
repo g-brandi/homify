@@ -26,8 +26,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.jar.JarOutputStream;
-
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 9001;
@@ -46,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnGoogle;
     private Button btnEmailPassword;
 
+    private TextView txtRegister;
+
     private TextView email;
     private TextView password;
 
@@ -57,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
         btnGoogle = findViewById(R.id.btnGoogle);
         btnEmailPassword = findViewById(R.id.btnEmailPassword);
+        txtRegister = findViewById(R.id.txtRegister);
         email = findViewById(R.id.txtEmail);
         password = findViewById(R.id.txtPassword);
 
@@ -90,6 +91,14 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (java.lang.IllegalArgumentException exception) {
                     Toast.makeText(LoginActivity.this, "Complilare entrambe le celle", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        txtRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }
