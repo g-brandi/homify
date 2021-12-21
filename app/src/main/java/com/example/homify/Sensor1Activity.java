@@ -100,7 +100,7 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
             }
         });
 
-        mChart = (LineChart) findViewById(R.id.linechart);
+        mChart = (LineChart) findViewById(R.id.linechart1);
         mChart.setBackgroundColor(Color.WHITE);
         mChart.getDescription().setEnabled(false);
         mChart.setDrawGridBackground(false);

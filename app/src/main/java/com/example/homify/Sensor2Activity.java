@@ -53,7 +53,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sensor1);
+        setContentView(R.layout.activity_sensor2);
 
         ///////////////////////////////////////////////////////////////////////////
         //Hooks//
@@ -75,11 +75,11 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.setCheckedItem(R.id.nav_temperatura);
+        navigationView.setCheckedItem(R.id.nav_umidita);
 
         ////////////////////////////////////////////////////////////////////////////
 
-        btnRefresh=findViewById(R.id.btnSensor1Refresh);
+        btnRefresh=findViewById(R.id.btnSensor2Refresh);
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +87,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
             }
         });
 
-        mChart = (LineChart) findViewById(R.id.linechart);
+        mChart = (LineChart) findViewById(R.id.linechart2);
         mChart.setBackgroundColor(Color.WHITE);
         mChart.getDescription().setEnabled(false);
         mChart.setDrawGridBackground(false);
