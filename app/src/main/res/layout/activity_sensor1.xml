@@ -67,7 +67,7 @@
         <!--                android:scaleType="centerInside" />-->
 
         <Button
-            android:id="@+id/btnstampa"
+            android:id="@+id/btnSensor1Refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"

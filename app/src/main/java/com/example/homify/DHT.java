@@ -1,15 +1,15 @@
 package com.example.homify;
 
-public class DataTempHum {
+public class DHT {
     private String Time;
     private Integer Humidity, Temperature;
 
 
-    public DataTempHum(){
+    public DHT(){
 
     }
 
-    public DataTempHum(String Time, Integer humidity, Integer temperature) {
+    public DHT(String Time, Integer humidity, Integer temperature) {
         this.Time = Time;
         this.Humidity = humidity;
         this.Temperature = temperature;
