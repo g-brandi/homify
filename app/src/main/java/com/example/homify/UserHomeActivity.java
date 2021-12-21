@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -37,12 +38,12 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    ImageView imageSveglia;
-    ImageView imageMeteo;
-    ImageView imageTemperatura;
-    ImageView imageUmidita;
-    ImageView imageGrafici;
-    ImageView imageImpostazioni;
+    RelativeLayout imageSveglia;
+    RelativeLayout imageMeteo;
+    RelativeLayout imageTemperatura;
+    RelativeLayout imageUmidita;
+    RelativeLayout imageGrafici;
+    RelativeLayout imageImpostazioni;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +54,13 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
-        imageSveglia = findViewById(R.id.imageView6);
-        imageMeteo = findViewById(R.id.imageView2);
-        imageTemperatura = findViewById(R.id.imageView3);
-        imageUmidita = findViewById(R.id.imageView4);
-        imageGrafici = findViewById(R.id.imageView5);
-        imageImpostazioni = findViewById(R.id.imageView7);
+        //BOTTONI
+        imageSveglia = findViewById(R.id.layout_sveglia);
+        imageMeteo = findViewById(R.id.layout_meteo);
+        imageTemperatura = findViewById(R.id.layout_temperatura);
+        imageUmidita = findViewById(R.id.layout_umidita);
+        imageGrafici = findViewById(R.id.layout_grafici);
+        imageImpostazioni = findViewById(R.id.layout_impostazioni);
 
         //BOTTONE SVEGLIA
         imageSveglia.setOnClickListener(new View.OnClickListener() {

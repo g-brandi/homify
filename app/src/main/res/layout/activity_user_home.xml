@@ -80,6 +80,7 @@
                     app:cardCornerRadius="10dp">
 
                     <RelativeLayout
+                        android:id="@+id/layout_meteo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -157,6 +158,7 @@
                     app:cardCornerRadius="10dp">
 
                     <RelativeLayout
+                        android:id="@+id/layout_umidita"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -189,6 +191,7 @@
                     app:cardCornerRadius="10dp">
 
                     <RelativeLayout
+                        android:id="@+id/layout_grafici"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -271,6 +274,7 @@
                     app:cardCornerRadius="10dp">
 
                     <RelativeLayout
+                        android:id="@+id/layout_impostazioni"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
