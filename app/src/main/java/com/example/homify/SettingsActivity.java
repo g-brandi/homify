@@ -53,7 +53,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.setCheckedItem(R.id.nav_sveglia);
+        navigationView.setCheckedItem(R.id.nav_impostazioni);
 
         // Bluetooth
 //        tgbBluetooth = findViewById(R.id.tgbBluetooth);
