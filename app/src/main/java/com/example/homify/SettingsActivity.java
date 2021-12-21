@@ -44,7 +44,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
         // Navigation Drawer Menu//
         Menu menu=navigationView.getMenu();
-        menu.findItem(R.id.nav_logout).setVisible(false);
 
         navigationView.bringToFront();
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
