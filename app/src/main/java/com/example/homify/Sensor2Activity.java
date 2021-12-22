@@ -94,7 +94,8 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
         mChart.getAxisRight().setDrawGridLines(false);
         mChart.getAxisLeft().setDrawGridLines(false);
         mChart.getXAxis().setDrawGridLines(false);
-        mChart.setScaleMinima(20f,1f);
+        mChart.setScaleMinima(3f,1f);
+
         firstSettings();
 
 
@@ -113,7 +114,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
                 for (DataSnapshot snapshotDHT : snapshot.getChildren()){
                     DHT dht = snapshotDHT.getValue(DHT.class);
                     if (dht != null)
-                        yValues.add(new Entry(yValues.size(),dht.getHumidity()));
+                        yValues.add(new Entry(dht.setTimeAsSeconds(),dht.getHumidity()));
                 }
                 // uscito dal for ha preso tutti i figli
 
@@ -128,15 +129,24 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
                 else {
                     setHumidity.setFillColor(Color.parseColor("#FF9700"));
                 }
-                setHumidity.setCubicIntensity(1f);
+
+                setHumidity.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setHumidity.setCubicIntensity(0.2f);
                 setHumidity.setValueTextSize(0f);
                 setHumidity.setColor(Color.MAGENTA);
                 setHumidity.setDrawVerticalHighlightIndicator(false);
+                setHumidity.setLineWidth(3f);
+                setHumidity.setDrawCircles(false);
+                setHumidity.setDrawValues(false);
+
                 ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                 dataSets.add(setHumidity);
                 LineData data = new LineData(dataSets);
                 mChart.setData(data);
-                mChart.moveViewToX(yValues.size());
+                mChart.getLegend().setEnabled(false);
+                mChart.setDrawMarkers(false);
+                mChart.moveViewToX(data.getXMax());
+                mChart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
                 mChart.invalidate();
                 System.out.println("Primo caricamento");
 
@@ -148,6 +158,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
             }
         });
     }
+
     @Override
     public void onBackPressed() {
 

@@ -39,6 +39,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +52,6 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
     DatabaseReference dataReference = database.getReference("data/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim());
 
-    private int yCount;
     private LineChart mChart;
     private ArrayList<Entry> yValues;
 
@@ -107,7 +109,8 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
         mChart.getAxisRight().setDrawGridLines(false);
         mChart.getAxisLeft().setDrawGridLines(false);
         mChart.getXAxis().setDrawGridLines(false);
-        mChart.setScaleMinima(20f,1f);
+        mChart.setScaleMinima(5f,1f);
+
         firstSettings();
 
 
@@ -126,7 +129,7 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
                 for (DataSnapshot snapshotDHT : snapshot.getChildren()){
                     DHT dht = snapshotDHT.getValue(DHT.class);
                     if (dht != null)
-                    yValues.add(new Entry(yValues.size(),dht.getTemperature()));
+                    yValues.add(new Entry(dht.setTimeAsSeconds(),dht.getTemperature()));
                 }
                 // uscito dal for ha preso tutti i figli
 
@@ -141,17 +144,25 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
                 else {
                     setTemperature.setFillColor(Color.parseColor("#FF9700"));
                 }
-                setTemperature.setCubicIntensity(1f);
+                setTemperature.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setTemperature.setCubicIntensity(0.2f);
                 setTemperature.setValueTextSize(0f);
                 setTemperature.setColor(Color.MAGENTA);
                 setTemperature.setDrawVerticalHighlightIndicator(false);
+                setTemperature.setLineWidth(3f);
+                setTemperature.setDrawCircles(false);
+                setTemperature.setDrawValues(false);
                 ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                 dataSets.add(setTemperature);
                 LineData data = new LineData(dataSets);
                 mChart.setData(data);
-                mChart.moveViewToX(yValues.size());
+                mChart.getLegend().setEnabled(false);
+                mChart.setDrawMarkers(false);
+                mChart.moveViewToX(data.getXMax());
+                mChart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
                 mChart.invalidate();
                 System.out.println("Primo caricamento");
+
 
             }
 
