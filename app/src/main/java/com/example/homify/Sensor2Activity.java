@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -33,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class Sensor2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     private Button btnRefresh;
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
     DatabaseReference dataReference = database.getReference("data/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim());
@@ -88,13 +90,19 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
         });
 
         mChart = (LineChart) findViewById(R.id.linechart2);
+
         mChart.setBackgroundColor(Color.WHITE);
         mChart.getDescription().setEnabled(false);
         mChart.setDrawGridBackground(false);
         mChart.getAxisRight().setDrawGridLines(false);
         mChart.getAxisLeft().setDrawGridLines(false);
         mChart.getXAxis().setDrawGridLines(false);
-        mChart.setScaleMinima(3f,1f);
+        //mChart.getXAxis().setLabelCount(4,true);
+        mChart.setPadding(5,5,5,5);
+        mChart.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        mChart.getXAxis().setXOffset(1);
+        mChart.setVisibleXRange(2,7);
+        mChart.setScaleMinima(5f,1f);
 
         firstSettings();
 
@@ -102,6 +110,58 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
     }
 
     private void refreshGraph() {
+        yValues=new ArrayList<>();
+        dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // ciclo for per prendere il database e creare gli oggetti nella lista
+                for (DataSnapshot snapshotDHT : snapshot.getChildren()){
+                    DHT dht = snapshotDHT.getValue(DHT.class);
+                    if (dht != null)
+                        yValues.add(new Entry(dht.setTimeAsSeconds(),dht.getHumidity()));
+                }
+                // uscito dal for ha preso tutti i figli
+
+                //dati per il grafico
+                LineDataSet setHumidity=new LineDataSet(yValues, "Umidità registrata");
+                setHumidity.setDrawFilled(true);
+                if (Utils.getSDKInt() >= 18) {
+                    // fill drawable only supported on api level 18 and above
+                    Drawable drawable = ContextCompat.getDrawable(Sensor2Activity.this, R.drawable.chart_bg_gradient2);
+                    setHumidity.setFillDrawable(drawable);
+                }
+                else {
+                    setHumidity.setFillColor(Color.parseColor("#FF9700"));
+                }
+
+                setHumidity.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setHumidity.setCubicIntensity(0.2f);
+                setHumidity.setValueTextSize(0f);
+                setHumidity.setColor(Color.parseColor("#10A9FF"));
+                setHumidity.setDrawVerticalHighlightIndicator(false);
+                setHumidity.setLineWidth(3f);
+                setHumidity.setDrawCircles(false);
+                setHumidity.setDrawValues(false);
+
+                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                dataSets.add(setHumidity);
+                LineData data = new LineData(dataSets);
+                mChart.setData(data);
+                mChart.getLegend().setEnabled(false);
+                mChart.setDrawMarkers(false);
+                mChart.moveViewToX(data.getXMax());
+                mChart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
+                mChart.postInvalidate();
+                System.out.println("Aggiornamento H");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void firstSettings(){
@@ -123,7 +183,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
                 setHumidity.setDrawFilled(true);
                 if (Utils.getSDKInt() >= 18) {
                     // fill drawable only supported on api level 18 and above
-                    Drawable drawable = ContextCompat.getDrawable(Sensor2Activity.this, R.drawable.chart_background_gradient);
+                    Drawable drawable = ContextCompat.getDrawable(Sensor2Activity.this, R.drawable.chart_bg_gradient2);
                     setHumidity.setFillDrawable(drawable);
                 }
                 else {
@@ -133,7 +193,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
                 setHumidity.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
                 setHumidity.setCubicIntensity(0.2f);
                 setHumidity.setValueTextSize(0f);
-                setHumidity.setColor(Color.MAGENTA);
+                setHumidity.setColor(Color.parseColor("#10A9FF"));
                 setHumidity.setDrawVerticalHighlightIndicator(false);
                 setHumidity.setLineWidth(3f);
                 setHumidity.setDrawCircles(false);

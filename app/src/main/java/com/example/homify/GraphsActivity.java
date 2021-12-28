@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -93,7 +94,12 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
         mChartH.getAxisRight().setDrawGridLines(false);
         mChartH.getAxisLeft().setDrawGridLines(false);
         mChartH.getXAxis().setDrawGridLines(false);
-        mChartH.setScaleMinima(3f,1f);
+        //mChart.getXAxis().setLabelCount(4,true);
+        mChartH.setPadding(5,5,5,5);
+        mChartH.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        mChartH.getXAxis().setXOffset(1);
+        mChartH.setVisibleXRange(2,7);
+        mChartH.setScaleMinima(5f,1f);
 
         mChartT = (LineChart) findViewById(R.id.linechartT);
         mChartT.setBackgroundColor(Color.WHITE);
@@ -102,19 +108,196 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
         mChartT.getAxisRight().setDrawGridLines(false);
         mChartT.getAxisLeft().setDrawGridLines(false);
         mChartT.getXAxis().setDrawGridLines(false);
-        mChartT.setScaleMinima(3f,1f);
+        //mChart.getXAxis().setLabelCount(4,true);
+        mChartT.setPadding(5,5,5,5);
+        mChartT.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        mChartT.getXAxis().setXOffset(1);
+        mChartT.setVisibleXRange(2,7);
+        mChartT.setScaleMinima(5f,1f);
 
-        firstSettingsHumidity();
-        firstSettingsTemperature();
+
+
+        firstSettings();
 
 
 
     }
 
     private void refreshGraph() {
+
+        yValuesH=new ArrayList<>();
+        yValuesT=new ArrayList<>();
+        dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // ciclo for per prendere il database e creare gli oggetti nella lista
+                for (DataSnapshot snapshotDHT : snapshot.getChildren()){
+                    DHT dht = snapshotDHT.getValue(DHT.class);
+                    if (dht != null) {
+                        yValuesH.add(new Entry(dht.setTimeAsSeconds(), dht.getHumidity()));
+                        yValuesT.add(new Entry(dht.setTimeAsSeconds(), dht.getTemperature()));
+                    }
+                }
+                // uscito dal for ha preso tutti i figli
+
+                //dati per il grafico
+                LineDataSet setHumidity=new LineDataSet(yValuesH, "Umidità registrata");
+                LineDataSet setTemperature=new LineDataSet(yValuesT, "Temperatura registrata");
+                setHumidity.setDrawFilled(true);
+                setTemperature.setDrawFilled(true);
+                if (Utils.getSDKInt() >= 18) {
+                    // fill drawable only supported on api level 18 and above
+                    Drawable drawableH = ContextCompat.getDrawable(GraphsActivity.this, R.drawable.chart_bg_gradient2);
+                    setHumidity.setFillDrawable(drawableH);
+                    Drawable drawableT = ContextCompat.getDrawable(GraphsActivity.this, R.drawable.chart_background_gradient);
+                    setTemperature.setFillDrawable(drawableT);
+                }
+                else {
+                    setHumidity.setFillColor(Color.parseColor("#FF9700"));
+                    setTemperature.setFillColor(Color.parseColor("#FF9700"));
+                }
+
+                setHumidity.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setHumidity.setCubicIntensity(1f);
+                setHumidity.setValueTextSize(0f);
+                setHumidity.setColor(Color.parseColor("#10A9FF"));
+                setHumidity.setDrawVerticalHighlightIndicator(false);
+                setHumidity.setLineWidth(3f);
+                setHumidity.setDrawCircles(false);
+                setHumidity.setDrawValues(false);
+
+                setTemperature.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setTemperature.setCubicIntensity(1f);
+                setTemperature.setValueTextSize(0f);
+                setTemperature.setColor(Color.parseColor("#DB352F"));
+                setTemperature.setDrawVerticalHighlightIndicator(false);
+                setTemperature.setLineWidth(3f);
+                setTemperature.setDrawCircles(false);
+                setTemperature.setDrawValues(false);
+
+                ArrayList<ILineDataSet> dataSetsT = new ArrayList<>();
+                ArrayList<ILineDataSet> dataSetsH = new ArrayList<>();
+                dataSetsT.add(setTemperature);
+                dataSetsH.add(setHumidity);
+                LineData dataT = new LineData(dataSetsT);
+                LineData dataH = new LineData(dataSetsH);
+                mChartH.setData(dataH);
+                mChartH.getLegend().setEnabled(false);
+                mChartH.setDrawMarkers(false);
+                mChartH.moveViewToX(dataH.getXMax());
+                mChartH.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
+
+                mChartT.setData(dataT);
+                mChartT.getLegend().setEnabled(false);
+                mChartT.setDrawMarkers(false);
+                mChartT.moveViewToX(dataT.getXMax());
+                mChartT.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
+
+                mChartT.postInvalidate();
+                mChartH.postInvalidate();
+
+
+                System.out.println("Update T H");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
-    private void firstSettingsHumidity(){
+    private void firstSettings(){
+
+        yValuesH=new ArrayList<>();
+        yValuesT=new ArrayList<>();
+        dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // ciclo for per prendere il database e creare gli oggetti nella lista
+                for (DataSnapshot snapshotDHT : snapshot.getChildren()){
+                    DHT dht = snapshotDHT.getValue(DHT.class);
+                    if (dht != null) {
+                        yValuesH.add(new Entry(dht.setTimeAsSeconds(), dht.getHumidity()));
+                        yValuesT.add(new Entry(dht.setTimeAsSeconds(), dht.getTemperature()));
+                    }
+                }
+                // uscito dal for ha preso tutti i figli
+
+                //dati per il grafico
+                LineDataSet setHumidity=new LineDataSet(yValuesH, "Umidità registrata");
+                LineDataSet setTemperature=new LineDataSet(yValuesT, "Temperatura registrata");
+                setHumidity.setDrawFilled(true);
+                setTemperature.setDrawFilled(true);
+                if (Utils.getSDKInt() >= 18) {
+                    // fill drawable only supported on api level 18 and above
+                    Drawable drawableH = ContextCompat.getDrawable(GraphsActivity.this, R.drawable.chart_bg_gradient2);
+                    setHumidity.setFillDrawable(drawableH);
+                    Drawable drawableT = ContextCompat.getDrawable(GraphsActivity.this, R.drawable.chart_background_gradient);
+                    setTemperature.setFillDrawable(drawableT);
+                }
+                else {
+                    setHumidity.setFillColor(Color.parseColor("#FF9700"));
+                    setTemperature.setFillColor(Color.parseColor("#FF9700"));
+                }
+
+                setHumidity.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setHumidity.setCubicIntensity(0.2f);
+                setHumidity.setValueTextSize(0f);
+                setHumidity.setColor(Color.parseColor("#10A9FF"));
+                setHumidity.setDrawVerticalHighlightIndicator(false);
+                setHumidity.setLineWidth(3f);
+                setHumidity.setDrawCircles(false);
+                setHumidity.setDrawValues(false);
+
+                setTemperature.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setTemperature.setCubicIntensity(0.2f);
+                setTemperature.setValueTextSize(0f);
+                setTemperature.setColor(Color.parseColor("#DB352F"));
+                setTemperature.setDrawVerticalHighlightIndicator(false);
+                setTemperature.setLineWidth(3f);
+                setTemperature.setDrawCircles(false);
+                setTemperature.setDrawValues(false);
+
+                ArrayList<ILineDataSet> dataSetsT = new ArrayList<>();
+                ArrayList<ILineDataSet> dataSetsH = new ArrayList<>();
+                dataSetsT.add(setTemperature);
+                dataSetsH.add(setHumidity);
+                LineData dataT = new LineData(dataSetsT);
+                LineData dataH = new LineData(dataSetsH);
+                mChartH.setData(dataH);
+                mChartH.getLegend().setEnabled(false);
+                mChartH.setDrawMarkers(false);
+                mChartH.moveViewToX(dataH.getXMax());
+                mChartH.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
+
+                mChartT.setData(dataT);
+                mChartT.getLegend().setEnabled(false);
+                mChartT.setDrawMarkers(false);
+                mChartT.moveViewToX(dataT.getXMax());
+                mChartT.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
+
+                mChartT.invalidate();
+                mChartH.invalidate();
+
+
+                System.out.println("FIRST T H");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    /*private void firstSettingsHumidity(){
         yValuesH=new ArrayList<>();
         dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -222,6 +405,7 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
             }
         });
     }
+*/
 
     @Override
     public void onBackPressed() {

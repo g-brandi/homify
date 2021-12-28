@@ -109,6 +109,11 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
         mChart.getAxisRight().setDrawGridLines(false);
         mChart.getAxisLeft().setDrawGridLines(false);
         mChart.getXAxis().setDrawGridLines(false);
+        //mChart.getXAxis().setLabelCount(4,true);
+        mChart.setPadding(5,5,5,5);
+        mChart.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        mChart.getXAxis().setXOffset(1);
+        mChart.setVisibleXRange(2,7);
         mChart.setScaleMinima(5f,1f);
 
         firstSettings();
@@ -117,6 +122,59 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
     }
 
     private void refreshGraph() {
+
+        yValues=new ArrayList<>();
+        dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // ciclo for per prendere il database e creare gli oggetti nella lista
+                for (DataSnapshot snapshotDHT : snapshot.getChildren()){
+                    DHT dht = snapshotDHT.getValue(DHT.class);
+                    if (dht != null)
+                        yValues.add(new Entry(dht.setTimeAsSeconds(),dht.getTemperature()));
+                }
+                // uscito dal for ha preso tutti i figli
+
+                //dati per il grafico
+                LineDataSet setTemperature=new LineDataSet(yValues, "Temperatura registrata");
+                setTemperature.setDrawFilled(true);
+                if (Utils.getSDKInt() >= 18) {
+                    // fill drawable only supported on api level 18 and above
+                    Drawable drawable = ContextCompat.getDrawable(Sensor1Activity.this, R.drawable.chart_background_gradient);
+                    setTemperature.setFillDrawable(drawable);
+                }
+                else {
+                    setTemperature.setFillColor(Color.parseColor("#FF9700"));
+                }
+                setTemperature.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setTemperature.setCubicIntensity(0.2f);
+                setTemperature.setValueTextSize(0f);
+                setTemperature.setColor(Color.parseColor("#DB352F"));
+                setTemperature.setDrawVerticalHighlightIndicator(false);
+                setTemperature.setLineWidth(3f);
+                setTemperature.setDrawCircles(false);
+                setTemperature.setDrawValues(true);
+                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                dataSets.add(setTemperature);
+                LineData data = new LineData(dataSets);
+                mChart.setData(data);
+                mChart.getLegend().setEnabled(false);
+                mChart.setDrawMarkers(false);
+                mChart.moveViewToX(data.getXMax());
+                mChart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
+                mChart.postInvalidate();
+                System.out.println("Aggiornamento T");
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     private void firstSettings(){
@@ -147,7 +205,7 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
                 setTemperature.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
                 setTemperature.setCubicIntensity(0.2f);
                 setTemperature.setValueTextSize(0f);
-                setTemperature.setColor(Color.MAGENTA);
+                setTemperature.setColor(Color.parseColor("#DB352F"));
                 setTemperature.setDrawVerticalHighlightIndicator(false);
                 setTemperature.setLineWidth(3f);
                 setTemperature.setDrawCircles(false);
@@ -155,6 +213,7 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
                 ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                 dataSets.add(setTemperature);
                 LineData data = new LineData(dataSets);
+                data.setDrawValues(true);
                 mChart.setData(data);
                 mChart.getLegend().setEnabled(false);
                 mChart.setDrawMarkers(false);
