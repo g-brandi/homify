@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <com.google.android.material.navigation.NavigationView
+   <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/nav_view"
@@ -58,16 +58,29 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:srcCompat="@drawable/ic_impostazioniicona" />
 
-<!--        <ToggleButton-->
-<!--            android:id="@+id/tgbBluetooth"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="32dp"-->
-<!--            android:text="ToggleButton"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.498"-->
-<!--            app:layout_constraintStart_toStartOf="parent" />-->
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Configura il nodo"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnConfigura"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <Button
+            android:id="@+id/btnConfigura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connetti"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

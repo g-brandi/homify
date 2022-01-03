@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,14 +22,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-
-    // dichiarazione variabili per Bluetooth
-//    public UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-//    BluetoothAdapter mBluetoothAdapter=null;
-//    BluetoothSocket mmSocket=null;
-//    BluetoothDevice mmDevice=null;
-//    OutputStream outStream;
-//    private ToggleButton tgbBluetooth;
+    private Button btnConfigura;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,82 +30,56 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_settings);
 
         //Hooks//
-        drawerLayout=findViewById(R.id.drawer_layout);
-        navigationView=findViewById(R.id.nav_view);
-        toolbar=findViewById(R.id.toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
 
         //Tool Bar//
         setSupportActionBar(toolbar);
 
         // Navigation Drawer Menu//
-        Menu menu=navigationView.getMenu();
+        Menu menu = navigationView.getMenu();
 
         navigationView.bringToFront();
-        ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
         navigationView.setCheckedItem(R.id.nav_impostazioni);
 
-        // Bluetooth
-//        tgbBluetooth = findViewById(R.id.tgbBluetooth);
-//        // evento: tap sul togglebutton per la connessione del bluetooth
-//        tgbBluetooth.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (tgbBluetooth.isChecked()) { // controlla che sia attivo il toogle button
-//                    mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//                    if (mBluetoothAdapter != null) {
-//                        //control that bluetooth is enabled
-//                        if (mBluetoothAdapter.isEnabled()) {
-//                            mmDevice = mBluetoothAdapter.getRemoteDevice("MAC"); // TODO: MAC address del bluetooth di arduino da inserire
-//                            try {
-//                                //bluetooth connection
-//                                mmSocket = mmDevice.createRfcommSocketToServiceRecord(uuid);
-//                                mmSocket.connect();
-//                                outStream = mmSocket.getOutputStream();
-//                                Toast.makeText(UserHomeActivity.this, "ON", Toast.LENGTH_SHORT).show();
-//                            } catch (IOException e) {
-//                                tgbBluetooth.setChecked(false);
-//                                Log.i("Bluetooth",e.toString());
-//                                try {
-//                                    //try to close bluetooth connection
-//                                    mmSocket.close();
-//                                } catch (IOException ceXC) {
-//                                }
-//                                Toast.makeText(UserHomeActivity.this, "Bluetooth isn't connect", Toast.LENGTH_SHORT).show();
-//                            }
-//                        } else {
-//                            Toast.makeText(UserHomeActivity.this, "Bluetooth isn't enabled", Toast.LENGTH_LONG).show();
-//                            tgbBluetooth.setChecked(false);
-//                        }
-//                    } //close mBluetoothAdapter!=null
-//                } else {
-//                    try {
-//                        //try to close socket connections
-//                        outStream.close();
-//                        mmSocket.close();
-//                    } catch (IOException ceXC) {}
-//                }
-//            }
-//        });
+        /** Connessione con il nodo sensore:
+         * Poiché la gestione del Bluetooth è molto articolata e degrada le prestazioni del
+         * microcontrollore, ho deciso di utilizzare nuovamente la rete Wi-Fi per comunicare
+         * al nodo tre parametri: nome della rete (SSID), password della rete e user ID.
+         *
+         * Funzionamento:
+         * Durante la fase di prima configurazione il nodo genera una rete Wi-Fi proprietaria
+         * e hosta su una porta (192.168.4.1) una piccola pagina HTML che ho scritto personalmente
+         * in cui inserire i dati richiesti da sottomettere tramite un bottone.
+         * Il microcontrollore salva nella memoria EEPROM questi dati, verifica che possa
+         * connettersi correttamente alla rete di casa e una volta connesso smette di funzionare
+         * in AP-mode (Access Point), ossia spegne il Wi-Fi proprietario.
+         *
+         * Vantaggi:
+         *  -> La connessione con il nodo sensore risulta molto più stabile ed affidabile
+         *  -> Non è necessario trovarsi nelle immediate vicinanze del nodo (è invece obbligatorio
+         *  per la connessione Bluetooth), in quanto la rete Wi-Fi ha una copertura maggiore
+         *  -> Il firmware del microcontrollore è molto più snello e stabile
+         *
+         * Svantaggi:
+         *  -> Nessuno, anzi, questo sistema è utilizzato da tutti i prodotti domotici compresi
+         *  assistenti vocali (Google Home ad esempio) e lampadine smart. */
+
+        btnConfigura = findViewById(R.id.btnConfigura);
+        btnConfigura.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, WebViewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
-
-    // funzione per scrivere nella output del bluetooth
-//    private void outMessage(String message) {
-//        if (outStream == null) {
-//            return;
-//        }
-//        byte[] msgBuffer = message.getBytes();
-//        try{
-//            outStream.write(msgBuffer);
-//        } catch (IOException e){
-//            Toast.makeText(UserHomeActivity.this, "Messaggio non Inviato", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
 
     @Override
     public void onBackPressed() {
