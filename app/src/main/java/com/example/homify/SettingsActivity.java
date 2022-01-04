@@ -9,10 +9,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +25,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     NavigationView navigationView;
     Toolbar toolbar;
     private Button btnConfigura;
+    private boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,15 +78,37 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         btnConfigura.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, WebViewActivity.class);
-                startActivity(intent);
+
+                // Manda l'utente nelle impostazioni per connettersi alla rete Wi-Fi del nodo
+                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+
+                //Chiede all'utente di connettersi alla rete Wi-Fi del nodo
+                Toast.makeText(SettingsActivity.this, "Connettiti alla rete del nodo", Toast.LENGTH_LONG).show();
+
+                // Flag per controllare il ritorno all'applicazione
+                flag = true;
+
             }
         });
     }
 
     @Override
-    public void onBackPressed() {
+    protected void onResume() {
+        super.onResume();
 
+        // Ritorno all'applicazione
+        if (flag) {
+
+            // Passa a WebViewActivity per accedere ala pagina di configurazione del nodo
+            startActivity(new Intent(SettingsActivity.this, WebViewActivity.class));
+            finish();
+        }
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }
