@@ -91,7 +91,7 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/rounded_border"
                         android:ems="10"
-                        android:hint="Enter Your City Name"
+                        android:hint="Inserisci la città"
                         android:inputType="text"
                         android:textColor="@color/black"
                         android:textColorHint="#939393"
@@ -178,7 +178,7 @@
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:text="Humidity"
+                        android:text="Umidità"
                         android:textAllCaps="false"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/black"
@@ -189,13 +189,13 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/hum"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:layout_marginStart="38dp"/>
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/humidity"
-                        android:layout_gravity="end"
+                        android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="--"
@@ -210,24 +210,24 @@
                     <TextView
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="Min Temperature"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:gravity="start"
+                        android:text="Temperatura minima"
                         android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:layout_marginStart="5dp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/temp_down"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:layout_marginStart="38dp"/>
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/min_temp"
-                        android:layout_gravity="end"
+                        android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="--"
@@ -243,7 +243,7 @@
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:text="Max Temperature"
+                        android:text="Temperatura massima"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/black"
                         android:textSize="15sp"
@@ -253,13 +253,13 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/temp_up"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:layout_marginStart="38dp"/>
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/max_temp"
-                        android:layout_gravity="end"
+                        android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="--"
@@ -290,7 +290,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sunrise"
+                            android:text="Alba"
                             android:includeFontPadding="false"
                             android:textColor="@color/black"/>
                         <TextView
@@ -319,7 +319,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sunset"
+                            android:text="Tramonto"
                             android:includeFontPadding="false"
                             android:textColor="@color/black"/>
                         <TextView
@@ -344,7 +344,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="175dp" />
+            app:layout_constraintGuide_begin="155dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

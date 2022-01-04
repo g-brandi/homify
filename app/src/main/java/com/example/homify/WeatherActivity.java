@@ -110,29 +110,29 @@ public class WeatherActivity extends AppCompatActivity implements NavigationView
                 String city_name = jsonObj.getString("name");
                 String countryname = sys.getString("country");
                 Long updatedAt = jsonObj.getLong("dt");
-                String updatedAtText = "Last Updated at: " + new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(new Date(updatedAt * 1000));
+                String updatedAtText = "Ultimo aggiornamento: " + new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(new Date(updatedAt * 1000));
                 String temperature = main.getString("temp");
                 String cast = weather.getString("description");
                 String humi_dity = main.getString("humidity");
                 String temp_min = main.getString("temp_min");
                 String temp_max = main.getString("temp_max");
                 Long rise = sys.getLong("sunrise");
-                String sunrise = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date(rise * 1000));
+                String sunrise = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(rise * 1000));
                 Long set = sys.getLong("sunset");
-                String sunset = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date(set * 1000));
+                String sunset = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(set * 1000));
                 // SET ALL VALUES IN TEXTBOX :
                 city.setText(city_name);
                 country.setText(countryname);
                 time.setText(updatedAtText);
                 temp.setText(temperature + "°C");
                 forecast.setText(cast);
-                humidity.setText(humi_dity);
-                min_temp.setText(temp_min);
-                max_temp.setText(temp_max);
+                humidity.setText(humi_dity+ "%");
+                min_temp.setText(temp_min+ "°C");
+                max_temp.setText(temp_max+ "°C");
                 sunrises.setText(sunrise);
                 sunsets.setText(sunset);
             } catch (Exception e) {
-                Toast.makeText(WeatherActivity.this, "Error:" + e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(WeatherActivity.this, "Inserire una città valida", Toast.LENGTH_SHORT).show();
             }
         }
     }
