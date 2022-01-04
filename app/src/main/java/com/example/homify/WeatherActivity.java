@@ -4,12 +4,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -23,8 +37,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class WeatherActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,11 +50,15 @@ public class WeatherActivity extends AppCompatActivity implements NavigationView
     NavigationView navigationView;
     Toolbar toolbar;
 
-    String CITY;
-    String API = "7144058e5c94b539cf4543138ab547da";
-    ImageView search;
-    EditText etCity;
-    TextView city,country,time,temp,forecast,humidity,min_temp,max_temp,sunrises,sunsets;
+    private String CITY;
+    private String API = "7144058e5c94b539cf4543138ab547da";
+    private ImageView search;
+    private EditText etCity;
+    private TextView city, country, time, temp, forecast, humidity, min_temp, max_temp, sunrises, sunsets;
+
+    private LocationManager locationManager;
+    private int PERMISSION_CODE = 1;
+    private String cityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +66,9 @@ public class WeatherActivity extends AppCompatActivity implements NavigationView
         setContentView(R.layout.activity_weather);
 
         //Hooks//
-        drawerLayout=findViewById(R.id.drawer_layout);
-        navigationView=findViewById(R.id.nav_view);
-        toolbar=findViewById(R.id.toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
 
         //Tool Bar//
         setSupportActionBar(toolbar);
@@ -57,7 +78,7 @@ public class WeatherActivity extends AppCompatActivity implements NavigationView
         //menu.findItem(R.id.nav_logout).setVisible(false);
 
         navigationView.bringToFront();
-        ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -87,7 +108,109 @@ public class WeatherActivity extends AppCompatActivity implements NavigationView
                 new weatherTask().execute();
             }
         });
-}
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+//        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+//        if (permissionCheck != PackageManager.PERMISSION_GRANTED){
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
+//                Toast.makeText(this, "The permission to get BLE location data is required", Toast.LENGTH_SHORT).show();
+//            }else{
+//                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+//            }
+//        }
+
+        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(WeatherActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},PERMISSION_CODE);
+        }
+
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (location != null) {
+            CITY = getCityName(location.getLongitude(), location.getLatitude());
+            etCity.setText(CITY);
+            new weatherInitTask().execute();
+        }
+    }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        @SuppressLint("MissingPermission") Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//        if (location != null) {
+//            CITY = getCityName(location.getLongitude(), location.getLatitude());
+//            etCity.setText(CITY);
+//            new weatherInitTask().execute();
+//        }
+//    }
+
+    private String getCityName(double longitude, double latitude){
+        String cityName = "Not found";
+        Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
+        try {
+            List<Address> address = gcd.getFromLocation(latitude, longitude, 10);
+            for(Address adr : address){
+                if(adr!=null){
+                    String city = adr.getLocality();
+                    if(city!=null && !city.equals("")){
+                        cityName = city;
+                    } else {
+                        Log.d("TAG", "CITY NOT FOUND");
+                    }
+                }
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return cityName;
+    }
+
+    class weatherInitTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected String doInBackground(String... args) {
+            String response = HttpRequest.excuteGet("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric&appid=" + API);
+            return response;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonObj = new JSONObject(result);
+                JSONObject main = jsonObj.getJSONObject("main");
+                JSONObject weather = jsonObj.getJSONArray("weather").getJSONObject(0);
+                JSONObject sys = jsonObj.getJSONObject("sys");
+                // CALL VALUE IN API :
+                String city_name = jsonObj.getString("name");
+                String countryname = sys.getString("country");
+                Long updatedAt = jsonObj.getLong("dt");
+                String updatedAtText = "Ultimo aggiornamento: " + new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(new Date(updatedAt * 1000));
+                String temperature = main.getString("temp");
+                String cast = weather.getString("description");
+                String humi_dity = main.getString("humidity");
+                String temp_min = main.getString("temp_min");
+                String temp_max = main.getString("temp_max");
+                Long rise = sys.getLong("sunrise");
+                String sunrise = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(rise * 1000));
+                Long set = sys.getLong("sunset");
+                String sunset = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(set * 1000));
+                // SET ALL VALUES IN TEXTBOX :
+                city.setText(city_name);
+                country.setText(countryname);
+                time.setText(updatedAtText);
+                temp.setText(temperature + "°C");
+                forecast.setText(cast);
+                humidity.setText(humi_dity+ "%");
+                min_temp.setText(temp_min+ "°C");
+                max_temp.setText(temp_max+ "°C");
+                sunrises.setText(sunrise);
+                sunsets.setText(sunset);
+            } catch (Exception e) {
+                Toast.makeText(WeatherActivity.this, "Inserire una città valida", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     class weatherTask extends AsyncTask<String, Void, String> {
         @Override
