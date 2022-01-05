@@ -111,37 +111,30 @@ public class WeatherActivity extends AppCompatActivity implements NavigationView
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-//        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-//        if (permissionCheck != PackageManager.PERMISSION_GRANTED){
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
-//                Toast.makeText(this, "The permission to get BLE location data is required", Toast.LENGTH_SHORT).show();
-//            }else{
-//                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-//            }
-//        }
-
         if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(WeatherActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},PERMISSION_CODE);
         }
 
-        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        if (location != null) {
-            CITY = getCityName(location.getLongitude(), location.getLatitude());
-            etCity.setText(CITY);
-            new weatherInitTask().execute();
-        }
-    }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        @SuppressLint("MissingPermission") Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 //        if (location != null) {
 //            CITY = getCityName(location.getLongitude(), location.getLatitude());
 //            etCity.setText(CITY);
 //            new weatherInitTask().execute();
 //        }
-//    }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)==PackageManager.PERMISSION_GRANTED){
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null) {
+                CITY = getCityName(location.getLongitude(), location.getLatitude());
+                etCity.setText(CITY);
+                new weatherInitTask().execute();
+            }
+        }
+    }
 
     private String getCityName(double longitude, double latitude){
         String cityName = "Not found";
