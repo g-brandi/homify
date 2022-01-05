@@ -10,9 +10,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -20,6 +26,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     NavigationView navigationView;
     Toolbar toolbar;
 
+    TextView nome, cognome, email;
+    FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
+    DatabaseReference dataReference = database.getReference("users/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +55,23 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.setCheckedItem(R.id.nav_profile);
+
+        nome = findViewById(R.id.user_name_id);
+        cognome = findViewById(R.id.user_surname_id);
+        email = findViewById(R.id.user_email_id);
+
+        dataReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Utente user = snapshot.getValue(Utente.class);
+                nome.setText(user.getNome());
+                cognome.setText(user.getCognome());
+                email.setText(user.getEmail());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
 
