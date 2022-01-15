@@ -20,13 +20,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -44,6 +48,9 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
     RelativeLayout imageUmidita;
     RelativeLayout imageGrafici;
     RelativeLayout imageImpostazioni;
+
+    TextView txtTips;
+    private String tip="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +122,49 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
             public void onClick(View view) {
                 Intent openImpostazioni = new Intent(UserHomeActivity.this, SettingsActivity.class);
                 startActivity(openImpostazioni);
+            }
+        });
+
+        //SUGGERIMENTI
+        txtTips=findViewById(R.id.txtTips);
+        FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference("data/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim())
+                .orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot data : snapshot.getChildren())
+                {
+                    int lastTemperature = data.getValue(DHT.class).getTemperature();
+                    System.out.println(lastTemperature);
+                    if (lastTemperature<20){
+                        tip="Ci sono "+lastTemperature+" gradi, inizia a far freddo!";
+                        if (lastTemperature<15){
+                            tip="Ci sono "+lastTemperature+" gradi, vuoi accendere il riscaldamento?";
+                            if (lastTemperature<10){
+                                tip="Ci sono "+lastTemperature+" gradi, per favore riscaldati!";
+                            }
+                        }
+                    }
+                    if (lastTemperature>30){
+                        tip="Ci sono "+lastTemperature+" gradi, ricordati di idratarti.";
+                        if (lastTemperature>35){
+                            tip="Ci sono "+lastTemperature+" gradi, fa molto caldo, vuoi accendere il ventilatore?";
+                            if (lastTemperature>40){
+                                tip="Ci sono "+lastTemperature+" gradi, hai fatto rifornimento di ghiaccio?";
+                            }
+                        }
+
+                    }
+                    if (lastTemperature>=20 && lastTemperature <=30){
+                        tip="Ci sono ben "+lastTemperature+" gradi.";
+                    }
+                    txtTips.setText(tip);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
