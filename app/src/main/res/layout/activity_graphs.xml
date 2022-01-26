@@ -69,36 +69,140 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_begin="220dp" />
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/linechartT"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginTop="24dp"
+                android:layout_height="320dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline3" />
+                app:layout_constraintTop_toTopOf="@+id/guideline3"
+                android:id="@+id/cardview1">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/linechartH"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/cardview2"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="12dp"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="Temperatura"/>
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeT"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="28dp">
+
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/linechartT"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                    </com.github.mikephil.charting.charts.LineChart>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginTop="24dp"
+                android:layout_height="320dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linechartT"/>
+                app:layout_constraintTop_toBottomOf="@+id/cardview1"
+                android:id="@+id/cardview2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/cardview2"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="12dp"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="Umidità"
+                    android:id="@+id/txtHum"/>
+
+                <RelativeLayout
+                    android:id="@+id/relativeH"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="28dp">
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/linechartH"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                    </com.github.mikephil.charting.charts.LineChart>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
             <Button
                 android:id="@+id/btnGraphRefresh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Button"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="2dp"
+                android:textSize="10dp"
+                android:text="Aggiorna"
+                android:background="@color/fui_transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="@id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/guideline3" />
+
+            <Button
+                android:id="@+id/btnSensorTData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="12dp"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:background="@color/fui_transparent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linechartH" />
+                app:layout_constraintTop_toBottomOf="@+id/guideline3"
+                android:clickable="false"/>
+
+            <Button
+                android:id="@+id/btnSensorHData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="2dp"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:background="@color/fui_transparent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardview1"
+                android:clickable="false"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

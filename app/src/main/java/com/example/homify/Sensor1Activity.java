@@ -49,11 +49,13 @@ import java.util.List;
 public class Sensor1Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private Button btnRefresh;
+    private Button btnTemp;
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
     DatabaseReference dataReference = database.getReference("data/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim());
 
     private LineChart mChart;
     private ArrayList<Entry> yValues;
+    private ArrayList<String> tempValues;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -93,6 +95,7 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
         navigationView.setCheckedItem(R.id.nav_temperatura);
 
         ////////////////////////////////////////////////////////////////////////////
+        btnTemp = findViewById(R.id.btnSensor1Data);
 
         btnRefresh=findViewById(R.id.btnSensor1Refresh);
         btnRefresh.setOnClickListener(new View.OnClickListener() {
@@ -107,15 +110,21 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
         mChart.getDescription().setEnabled(false);
         mChart.setDrawGridBackground(false);
         mChart.getAxisRight().setDrawGridLines(false);
-        mChart.getAxisLeft().setDrawGridLines(false);
+        mChart.getAxisLeft().setDrawGridLines(true);
         mChart.getXAxis().setDrawGridLines(false);
-        //mChart.getXAxis().setLabelCount(4,true);
+        mChart.getXAxis().setLabelCount(4,true);
         mChart.setPadding(5,5,5,5);
-        mChart.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         mChart.getXAxis().setXOffset(1);
         mChart.setVisibleXRange(2,7);
-        mChart.setScaleMinima(5f,1f);
-
+        mChart.setScaleMinima(75f,1f);
+        mChart.getAxisRight().setEnabled(false);
+        mChart.getXAxis().setCenterAxisLabels(true);
+        mChart.getAxisLeft().setGridColor(Color.parseColor("#D6D6D6"));
+        mChart.getXAxis().setDrawAxisLine(false);
+        mChart.getAxisLeft().setDrawAxisLine(false);
+        mChart.getXAxis().setGranularityEnabled(true);
+        mChart.getXAxis().setGranularity(1);
         firstSettings();
 
 
@@ -124,6 +133,7 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
     private void refreshGraph() {
 
         yValues=new ArrayList<>();
+        tempValues = new ArrayList<>();
         dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -131,8 +141,10 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
                 // ciclo for per prendere il database e creare gli oggetti nella lista
                 for (DataSnapshot snapshotDHT : snapshot.getChildren()){
                     DHT dht = snapshotDHT.getValue(DHT.class);
-                    if (dht != null)
-                        yValues.add(new Entry(dht.setTimeAsSeconds(),dht.getTemperature()));
+                    if (dht != null) {
+                        tempValues.add(dht.getTemperature().toString());
+                        yValues.add(new Entry(dht.setTimeAsSeconds(), dht.getTemperature()));
+                    }
                 }
                 // uscito dal for ha preso tutti i figli
 
@@ -147,10 +159,10 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
                 else {
                     setTemperature.setFillColor(Color.parseColor("#FF9700"));
                 }
-                setTemperature.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setTemperature.setMode(LineDataSet.Mode.STEPPED);
                 setTemperature.setCubicIntensity(0.2f);
                 setTemperature.setValueTextSize(0f);
-                setTemperature.setColor(Color.parseColor("#DB352F"));
+                setTemperature.setColor(Color.parseColor("#FF9700"));
                 setTemperature.setDrawVerticalHighlightIndicator(false);
                 setTemperature.setLineWidth(3f);
                 setTemperature.setDrawCircles(false);
@@ -162,10 +174,11 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
                 mChart.getLegend().setEnabled(false);
                 mChart.setDrawMarkers(false);
                 mChart.moveViewToX(data.getXMax());
+                mChart.getAxisLeft().removeAllLimitLines();
                 mChart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
                 mChart.postInvalidate();
                 System.out.println("Aggiornamento T");
-
+                btnTemp.setText(tempValues.get(tempValues.size()-1) + " °C");
 
             }
 
@@ -177,35 +190,38 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
 
     }
 
-    private void firstSettings(){
-        yValues=new ArrayList<>();
+    private void firstSettings() {
+        yValues = new ArrayList<>();
+        tempValues = new ArrayList<>();
         dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 // ciclo for per prendere il database e creare gli oggetti nella lista
-                for (DataSnapshot snapshotDHT : snapshot.getChildren()){
+                for (DataSnapshot snapshotDHT : snapshot.getChildren()) {
                     DHT dht = snapshotDHT.getValue(DHT.class);
-                    if (dht != null)
-                    yValues.add(new Entry(dht.setTimeAsSeconds(),dht.getTemperature()));
+                    if (dht != null) {
+                        tempValues.add(dht.getTemperature().toString());
+                        yValues.add(new Entry(dht.setTimeAsSeconds(), dht.getTemperature()));
+                    }
                 }
                 // uscito dal for ha preso tutti i figli
 
                 //dati per il grafico
-                LineDataSet setTemperature=new LineDataSet(yValues, "Temperatura registrata");
+                LineDataSet setTemperature = new LineDataSet(yValues, "Temperatura registrata");
                 setTemperature.setDrawFilled(true);
                 if (Utils.getSDKInt() >= 18) {
                     // fill drawable only supported on api level 18 and above
                     Drawable drawable = ContextCompat.getDrawable(Sensor1Activity.this, R.drawable.chart_background_gradient);
                     setTemperature.setFillDrawable(drawable);
-                }
-                else {
+                } else {
                     setTemperature.setFillColor(Color.parseColor("#FF9700"));
                 }
-                setTemperature.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setTemperature.setMode(LineDataSet.Mode.STEPPED);
                 setTemperature.setCubicIntensity(0.2f);
                 setTemperature.setValueTextSize(0f);
-                setTemperature.setColor(Color.parseColor("#DB352F"));
+                mChart.getAxisLeft().removeAllLimitLines();
+                setTemperature.setColor(Color.parseColor("#FF9700"));
                 setTemperature.setDrawVerticalHighlightIndicator(false);
                 setTemperature.setLineWidth(3f);
                 setTemperature.setDrawCircles(false);
@@ -221,8 +237,7 @@ public class Sensor1Activity extends AppCompatActivity implements NavigationView
                 mChart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
                 mChart.invalidate();
                 System.out.println("Primo caricamento");
-
-
+                btnTemp.setText(tempValues.get(tempValues.size() - 1) + " °C");
             }
 
             @Override

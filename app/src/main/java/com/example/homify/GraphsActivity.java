@@ -36,6 +36,9 @@ import java.util.ArrayList;
 public class GraphsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Button btnRefresh;
+    private Button btnTemperature;
+    private Button btnHumidity;
+
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
     DatabaseReference dataReference = database.getReference("data/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim());
 
@@ -43,6 +46,9 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
     private ArrayList<Entry> yValuesH;
     private LineChart mChartT;
     private ArrayList<Entry> yValuesT;
+
+    private ArrayList<String> temperatureValues;
+    private ArrayList<String> humidityValues;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -79,6 +85,9 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
 
         /////////////////////////////////////////////////////////////////////////////
 
+        btnTemperature = findViewById(R.id.btnSensorTData);
+        btnHumidity = findViewById(R.id.btnSensorHData);
+
         btnRefresh=findViewById(R.id.btnGraphRefresh);
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,35 +96,51 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
             }
         });
 
-        mChartH = (LineChart) findViewById(R.id.linechartH);
-        mChartH.setBackgroundColor(Color.WHITE);
-        mChartH.getDescription().setEnabled(false);
-        mChartH.setDrawGridBackground(false);
-        mChartH.getAxisRight().setDrawGridLines(false);
-        mChartH.getAxisLeft().setDrawGridLines(false);
-        mChartH.getXAxis().setDrawGridLines(false);
-        //mChart.getXAxis().setLabelCount(4,true);
-        mChartH.setPadding(5,5,5,5);
-        mChartH.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
-        mChartH.getXAxis().setXOffset(1);
-        mChartH.setVisibleXRange(2,7);
-        mChartH.setScaleMinima(5f,1f);
-
         mChartT = (LineChart) findViewById(R.id.linechartT);
         mChartT.setBackgroundColor(Color.WHITE);
         mChartT.getDescription().setEnabled(false);
         mChartT.setDrawGridBackground(false);
         mChartT.getAxisRight().setDrawGridLines(false);
-        mChartT.getAxisLeft().setDrawGridLines(false);
+        mChartT.getAxisLeft().setDrawGridLines(true);
         mChartT.getXAxis().setDrawGridLines(false);
-        //mChart.getXAxis().setLabelCount(4,true);
+        mChartT.getXAxis().setLabelCount(4,true);
         mChartT.setPadding(5,5,5,5);
-        mChartT.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        mChartT.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         mChartT.getXAxis().setXOffset(1);
         mChartT.setVisibleXRange(2,7);
-        mChartT.setScaleMinima(5f,1f);
+        mChartT.setScaleMinima(75f,1f);
+        mChartT.getAxisRight().setEnabled(false);
+        mChartT.getAxisLeft().setAxisLineColor(Color.TRANSPARENT);
+        mChartT.getXAxis().setCenterAxisLabels(true);
+        mChartT.getAxisLeft().setGridColor(Color.parseColor("#D6D6D6"));
+        mChartT.getAxisLeft().removeAllLimitLines();
+        mChartT.getXAxis().setDrawAxisLine(false);
+        mChartT.getAxisLeft().setDrawAxisLine(false);
+        mChartT.getXAxis().setGranularityEnabled(true);
+        mChartT.getXAxis().setGranularity( 30000 );
 
-
+        mChartH = (LineChart) findViewById(R.id.linechartH);
+        mChartH.setBackgroundColor(Color.WHITE);
+        mChartH.getDescription().setEnabled(false);
+        mChartH.setDrawGridBackground(false);
+        mChartH.getAxisRight().setDrawGridLines(false);
+        mChartH.getAxisLeft().setDrawGridLines(true);
+        mChartH.getXAxis().setDrawGridLines(false);
+        mChartH.getXAxis().setLabelCount(4,true);
+        mChartH.setPadding(5,5,5,5);
+        mChartH.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        mChartH.getXAxis().setXOffset(1);
+        mChartH.setVisibleXRange(2,7);
+        mChartH.setScaleMinima(75f,1f);
+        mChartH.getAxisRight().setEnabled(false);
+        mChartH.getAxisLeft().setAxisLineColor(Color.TRANSPARENT);
+        mChartH.getXAxis().setCenterAxisLabels(true);
+        mChartH.getAxisLeft().setGridColor(Color.parseColor("#D6D6D6"));
+        mChartH.getAxisLeft().removeAllLimitLines();
+        mChartH.getXAxis().setDrawAxisLine(false);
+        mChartH.getAxisLeft().setDrawAxisLine(false);
+        mChartH.getXAxis().setGranularityEnabled(true);
+        mChartH.getXAxis().setGranularity( 30000 );
 
         firstSettings();
 
@@ -127,6 +152,9 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
 
         yValuesH=new ArrayList<>();
         yValuesT=new ArrayList<>();
+        temperatureValues = new ArrayList<>();
+        humidityValues = new ArrayList<>();
+
         dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -138,6 +166,8 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
                         yValuesH.add(new Entry(dht.setTimeAsSeconds(), dht.getHumidity()));
                         yValuesT.add(new Entry(dht.setTimeAsSeconds(), dht.getTemperature()));
                     }
+                    temperatureValues.add(dht.getTemperature().toString());
+                    humidityValues.add(dht.getHumidity().toString());
                 }
                 // uscito dal for ha preso tutti i figli
 
@@ -148,7 +178,7 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
                 setTemperature.setDrawFilled(true);
                 if (Utils.getSDKInt() >= 18) {
                     // fill drawable only supported on api level 18 and above
-                    Drawable drawableH = ContextCompat.getDrawable(GraphsActivity.this, R.drawable.chart_bg_gradient2);
+                    Drawable drawableH = ContextCompat.getDrawable(GraphsActivity.this, R.drawable.chart_background_gradient);
                     setHumidity.setFillDrawable(drawableH);
                     Drawable drawableT = ContextCompat.getDrawable(GraphsActivity.this, R.drawable.chart_background_gradient);
                     setTemperature.setFillDrawable(drawableT);
@@ -158,19 +188,19 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
                     setTemperature.setFillColor(Color.parseColor("#FF9700"));
                 }
 
-                setHumidity.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-                setHumidity.setCubicIntensity(1f);
+                setHumidity.setMode(LineDataSet.Mode.STEPPED);
+                setHumidity.setCubicIntensity(0.2f);
                 setHumidity.setValueTextSize(0f);
-                setHumidity.setColor(Color.parseColor("#10A9FF"));
+                setHumidity.setColor(Color.parseColor("#FF9700"));
                 setHumidity.setDrawVerticalHighlightIndicator(false);
                 setHumidity.setLineWidth(3f);
                 setHumidity.setDrawCircles(false);
                 setHumidity.setDrawValues(false);
 
-                setTemperature.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-                setTemperature.setCubicIntensity(1f);
+                setTemperature.setMode(LineDataSet.Mode.STEPPED);
+                setTemperature.setCubicIntensity(0.2f);
                 setTemperature.setValueTextSize(0f);
-                setTemperature.setColor(Color.parseColor("#DB352F"));
+                setTemperature.setColor(Color.parseColor("#FF9700"));
                 setTemperature.setDrawVerticalHighlightIndicator(false);
                 setTemperature.setLineWidth(3f);
                 setTemperature.setDrawCircles(false);
@@ -197,6 +227,8 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
                 mChartT.postInvalidate();
                 mChartH.postInvalidate();
 
+                btnTemperature.setText(temperatureValues.get(temperatureValues.size()-1) + " °C");
+                btnHumidity.setText(humidityValues.get(humidityValues.size()-1) + "%");
 
                 System.out.println("Update T H");
 
@@ -214,6 +246,8 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
 
         yValuesH=new ArrayList<>();
         yValuesT=new ArrayList<>();
+        temperatureValues = new ArrayList<>();
+        humidityValues = new ArrayList<>();
         dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -225,6 +259,8 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
                         yValuesH.add(new Entry(dht.setTimeAsSeconds(), dht.getHumidity()));
                         yValuesT.add(new Entry(dht.setTimeAsSeconds(), dht.getTemperature()));
                     }
+                    temperatureValues.add(dht.getTemperature().toString());
+                    humidityValues.add(dht.getHumidity().toString());
                 }
                 // uscito dal for ha preso tutti i figli
 
@@ -235,7 +271,7 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
                 setTemperature.setDrawFilled(true);
                 if (Utils.getSDKInt() >= 18) {
                     // fill drawable only supported on api level 18 and above
-                    Drawable drawableH = ContextCompat.getDrawable(GraphsActivity.this, R.drawable.chart_bg_gradient2);
+                    Drawable drawableH = ContextCompat.getDrawable(GraphsActivity.this, R.drawable.chart_background_gradient);
                     setHumidity.setFillDrawable(drawableH);
                     Drawable drawableT = ContextCompat.getDrawable(GraphsActivity.this, R.drawable.chart_background_gradient);
                     setTemperature.setFillDrawable(drawableT);
@@ -245,19 +281,19 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
                     setTemperature.setFillColor(Color.parseColor("#FF9700"));
                 }
 
-                setHumidity.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setHumidity.setMode(LineDataSet.Mode.STEPPED);
                 setHumidity.setCubicIntensity(0.2f);
                 setHumidity.setValueTextSize(0f);
-                setHumidity.setColor(Color.parseColor("#10A9FF"));
+                setHumidity.setColor(Color.parseColor("#FF9700"));
                 setHumidity.setDrawVerticalHighlightIndicator(false);
                 setHumidity.setLineWidth(3f);
                 setHumidity.setDrawCircles(false);
                 setHumidity.setDrawValues(false);
 
-                setTemperature.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setTemperature.setMode(LineDataSet.Mode.STEPPED);
                 setTemperature.setCubicIntensity(0.2f);
                 setTemperature.setValueTextSize(0f);
-                setTemperature.setColor(Color.parseColor("#DB352F"));
+                setTemperature.setColor(Color.parseColor("#FF9700"));
                 setTemperature.setDrawVerticalHighlightIndicator(false);
                 setTemperature.setLineWidth(3f);
                 setTemperature.setDrawCircles(false);
@@ -284,6 +320,8 @@ public class GraphsActivity extends AppCompatActivity implements NavigationView.
                 mChartT.invalidate();
                 mChartH.invalidate();
 
+                btnTemperature.setText(temperatureValues.get(temperatureValues.size()-1) + " °C");
+                btnHumidity.setText(humidityValues.get(humidityValues.size()-1) + "%");
 
                 System.out.println("FIRST T H");
 

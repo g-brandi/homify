@@ -58,35 +58,82 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:srcCompat="@drawable/ic_temperaturaicona" />
 
-        <!--        <WebView-->
-        <!--                android:id="@+id/webview"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="fill_parent"-->
-        <!--                android:layout_gravity="center"-->
-        <!--                android:adjustViewBounds="true"-->
-        <!--                android:scaleType="centerInside" />-->
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
+            android:id="@+id/cardview1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/cardview2"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="12dp"
+                android:textStyle="bold"
+                android:textSize="12dp"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Temperatura"/>
+
+
+            <RelativeLayout
+                android:id="@+id/linechart11"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="28dp">
+
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/linechart1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                </com.github.mikephil.charting.charts.LineChart>
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/btnSensor1Refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Button"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            android:textSize="10dp"
+            android:text="Aggiorna"
+            android:background="@color/fui_transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linechart1" />
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/guideline2" />
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/linechart1"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
+        <Button
+            android:id="@+id/btnSensor1Data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginLeft="12dp"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            android:background="@color/fui_transparent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline2">
+            app:layout_constraintTop_toBottomOf="@+id/guideline2"
+            android:clickable="false"/>
 
-        </com.github.mikephil.charting.charts.LineChart>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"

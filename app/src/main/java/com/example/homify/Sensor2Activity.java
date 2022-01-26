@@ -36,11 +36,13 @@ import java.util.ArrayList;
 public class Sensor2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Button btnRefresh;
+    private Button btnHum;
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/");
     DatabaseReference dataReference = database.getReference("data/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim());
 
     private LineChart mChart;
     private ArrayList<Entry> yValues;
+    private ArrayList<String> humValues;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -81,6 +83,8 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
 
         ////////////////////////////////////////////////////////////////////////////
 
+        btnHum = findViewById(R.id.btnSensor2Data);
+
         btnRefresh=findViewById(R.id.btnSensor2Refresh);
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,20 +94,27 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
         });
 
         mChart = (LineChart) findViewById(R.id.linechart2);
-
         mChart.setBackgroundColor(Color.WHITE);
         mChart.getDescription().setEnabled(false);
         mChart.setDrawGridBackground(false);
         mChart.getAxisRight().setDrawGridLines(false);
-        mChart.getAxisLeft().setDrawGridLines(false);
+        mChart.getAxisLeft().setDrawGridLines(true);
         mChart.getXAxis().setDrawGridLines(false);
-        //mChart.getXAxis().setLabelCount(4,true);
+        mChart.getXAxis().setLabelCount(4,true);
         mChart.setPadding(5,5,5,5);
-        mChart.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         mChart.getXAxis().setXOffset(1);
         mChart.setVisibleXRange(2,7);
-        mChart.setScaleMinima(5f,1f);
-
+        mChart.setScaleMinima(75f,1f);
+        mChart.getAxisRight().setEnabled(false);
+        mChart.getAxisLeft().setAxisLineColor(Color.TRANSPARENT);
+        mChart.getXAxis().setCenterAxisLabels(true);
+        mChart.getAxisLeft().setGridColor(Color.parseColor("#D6D6D6"));
+        mChart.getAxisLeft().removeAllLimitLines();
+        mChart.getXAxis().setDrawAxisLine(false);
+        mChart.getAxisLeft().setDrawAxisLine(false);
+        mChart.getXAxis().setGranularityEnabled(true);
+        mChart.getXAxis().setGranularity( 30000 );
         firstSettings();
 
 
@@ -111,6 +122,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
 
     private void refreshGraph() {
         yValues=new ArrayList<>();
+        humValues = new ArrayList<>();
         dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -119,6 +131,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
                 for (DataSnapshot snapshotDHT : snapshot.getChildren()){
                     DHT dht = snapshotDHT.getValue(DHT.class);
                     if (dht != null)
+                        humValues.add(dht.getHumidity().toString());
                         yValues.add(new Entry(dht.setTimeAsSeconds(),dht.getHumidity()));
                 }
                 // uscito dal for ha preso tutti i figli
@@ -128,22 +141,21 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
                 setHumidity.setDrawFilled(true);
                 if (Utils.getSDKInt() >= 18) {
                     // fill drawable only supported on api level 18 and above
-                    Drawable drawable = ContextCompat.getDrawable(Sensor2Activity.this, R.drawable.chart_bg_gradient2);
+                    Drawable drawable = ContextCompat.getDrawable(Sensor2Activity.this, R.drawable.chart_background_gradient);
                     setHumidity.setFillDrawable(drawable);
                 }
                 else {
                     setHumidity.setFillColor(Color.parseColor("#FF9700"));
                 }
 
-                setHumidity.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setHumidity.setMode(LineDataSet.Mode.STEPPED);
                 setHumidity.setCubicIntensity(0.2f);
                 setHumidity.setValueTextSize(0f);
-                setHumidity.setColor(Color.parseColor("#10A9FF"));
+                setHumidity.setColor(Color.parseColor("#FF9700"));
                 setHumidity.setDrawVerticalHighlightIndicator(false);
                 setHumidity.setLineWidth(3f);
                 setHumidity.setDrawCircles(false);
                 setHumidity.setDrawValues(false);
-
                 ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                 dataSets.add(setHumidity);
                 LineData data = new LineData(dataSets);
@@ -154,7 +166,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
                 mChart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
                 mChart.postInvalidate();
                 System.out.println("Aggiornamento H");
-
+                btnHum.setText(humValues.get(humValues.size()-1) + "%");
             }
 
             @Override
@@ -166,6 +178,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
 
     private void firstSettings(){
         yValues=new ArrayList<>();
+        humValues = new ArrayList<>();
         dataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -174,6 +187,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
                 for (DataSnapshot snapshotDHT : snapshot.getChildren()){
                     DHT dht = snapshotDHT.getValue(DHT.class);
                     if (dht != null)
+                        humValues.add(dht.getHumidity().toString());
                         yValues.add(new Entry(dht.setTimeAsSeconds(),dht.getHumidity()));
                 }
                 // uscito dal for ha preso tutti i figli
@@ -183,17 +197,17 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
                 setHumidity.setDrawFilled(true);
                 if (Utils.getSDKInt() >= 18) {
                     // fill drawable only supported on api level 18 and above
-                    Drawable drawable = ContextCompat.getDrawable(Sensor2Activity.this, R.drawable.chart_bg_gradient2);
+                    Drawable drawable = ContextCompat.getDrawable(Sensor2Activity.this, R.drawable.chart_background_gradient);
                     setHumidity.setFillDrawable(drawable);
                 }
                 else {
                     setHumidity.setFillColor(Color.parseColor("#FF9700"));
                 }
 
-                setHumidity.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                setHumidity.setMode(LineDataSet.Mode.STEPPED);
                 setHumidity.setCubicIntensity(0.2f);
                 setHumidity.setValueTextSize(0f);
-                setHumidity.setColor(Color.parseColor("#10A9FF"));
+                setHumidity.setColor(Color.parseColor("#FF9700"));
                 setHumidity.setDrawVerticalHighlightIndicator(false);
                 setHumidity.setLineWidth(3f);
                 setHumidity.setDrawCircles(false);
@@ -209,7 +223,7 @@ public class Sensor2Activity extends AppCompatActivity implements NavigationView
                 mChart.getXAxis().setValueFormatter(new LineChartXAxisValueFormatter());
                 mChart.invalidate();
                 System.out.println("Primo caricamento");
-
+                btnHum.setText(humValues.get(humValues.size()-1) + "%");
             }
 
             @Override
