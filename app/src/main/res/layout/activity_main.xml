@@ -33,7 +33,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_icona_senza_sfondo" />
+        app:srcCompat="@drawable/ic_iconlogo" />
 
     <TextView
         android:id="@+id/topText"
@@ -79,6 +79,7 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:elevation="10sp"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

@@ -11,6 +11,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -49,8 +50,12 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
     RelativeLayout imageGrafici;
     RelativeLayout imageImpostazioni;
 
+    ImageView logo;
+
+    TextView txtTitleTip;
     TextView txtTips;
     private String tip="";
+    private String title="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,21 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
                 startActivity(openSveglia);
             }
         });
+
+        logo=findViewById(R.id.imageViewTip);
+        int nightModeFlags =
+                this.getResources().getConfiguration().uiMode &
+                        Configuration.UI_MODE_NIGHT_MASK;
+        switch (nightModeFlags) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                logo.setImageDrawable(getDrawable(R.drawable.ic_iconlogodark));
+                break;
+
+            case Configuration.UI_MODE_NIGHT_NO:
+                logo.setImageDrawable(getDrawable(R.drawable.ic_iconlogo));
+                break;
+        }
+
 
         //BOTTONE METEO
         imageMeteo.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +146,7 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
         });
 
         //SUGGERIMENTI
+        txtTitleTip=findViewById(R.id.txtTitleTip);
         txtTips=findViewById(R.id.txtTips);
         FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference("data/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim())
@@ -136,28 +157,43 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
                 {
                     int lastTemperature = data.getValue(DHT.class).getTemperature();
                     System.out.println(lastTemperature);
-                    if (lastTemperature<20){
-                        tip="Ci sono "+lastTemperature+" gradi, inizia a far freddo!";
-                        if (lastTemperature<15){
-                            tip="Ci sono "+lastTemperature+" gradi, vuoi accendere il riscaldamento?";
-                            if (lastTemperature<10){
-                                tip="Ci sono "+lastTemperature+" gradi, per favore riscaldati!";
-                            }
-                        }
-                    }
-                    if (lastTemperature>30){
-                        tip="Ci sono "+lastTemperature+" gradi, ricordati di idratarti.";
-                        if (lastTemperature>35){
-                            tip="Ci sono "+lastTemperature+" gradi, fa molto caldo, vuoi accendere il ventilatore?";
-                            if (lastTemperature>40){
-                                tip="Ci sono "+lastTemperature+" gradi, hai fatto rifornimento di ghiaccio?";
-                            }
-                        }
+                    title="Ci sono "+ lastTemperature + " gradi";
 
+                    if (lastTemperature<50){
+                        tip="Hai fatto rifornimento di ghiaccio?";
+                        if (lastTemperature<45){
+                            tip="Fa molto caldo, vuoi accendere il ventilatore?";
+                            if (lastTemperature<40){
+                                tip="Fa molto caldo, vuoi accendere il ventilatore?";
+                                if (lastTemperature<35){
+                                    tip="Ricorda di idratarti.";
+                                    if (lastTemperature<30){
+                                        tip="Aria di primavera, ti servono le pillole per l'allergia?";
+                                        if (lastTemperature<25){
+                                            tip="Aria di primavera, ti servono le pillole per l'allergia?";
+                                            if (lastTemperature<20){
+                                                tip="Inizia a far freddo!";
+                                                if (lastTemperature<15){
+                                                    tip="Vuoi accendere il riscaldamento?";
+                                                    if (lastTemperature<10){
+                                                        tip="Per favore riscaldati!";
+                                                        if (lastTemperature<5){
+                                                            tip="Se continua cosi rischi un'ipotermia.";
+                                                            if (lastTemperature<0){
+                                                                tip="La temperatura è troppo bassa! Accendere subito il riscaldamento.";
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                    if (lastTemperature>=20 && lastTemperature <=30){
-                        tip="Ci sono ben "+lastTemperature+" gradi.";
-                    }
+
+                    txtTitleTip.setText(title);
                     txtTips.setText(tip);
                 }
             }

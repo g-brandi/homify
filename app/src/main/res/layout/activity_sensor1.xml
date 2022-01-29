@@ -35,31 +35,36 @@
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/menuicon" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:fontFamily="sans-serif-black"
-            android:text="Temperatura"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            android:orientation="horizontal"
+            android:id="@+id/lltemp1"
+            android:padding="10sp"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" >
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="Temperatura"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="0dp"
-            android:layout_height="160dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:srcCompat="@drawable/ic_temperaturaicona" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="80sp"
+                android:rotation="45"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_temperaturaicona" />
 
+        </LinearLayout>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardview1"
             android:layout_width="match_parent"
             android:layout_height="320dp"
             android:layout_margin="10dp"
@@ -67,22 +72,21 @@
             app:cardCornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline2"
-            android:id="@+id/cardview1">
+            app:layout_constraintTop_toTopOf="@+id/guideline2">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/cardview2"
-                android:layout_marginTop="8dp"
                 android:layout_marginLeft="12dp"
-                android:textStyle="bold"
-                android:textSize="12dp"
+                android:layout_marginTop="8dp"
+                android:text="Temperatura"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="parent"
+                android:textSize="12dp"
+                android:textStyle="bold"
                 app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="Temperatura"/>
+                app:layout_constraintTop_toTopOf="@id/cardview2" />
 
 
             <RelativeLayout
@@ -96,7 +100,10 @@
                     android:id="@+id/linechart1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
@@ -111,9 +118,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginRight="2dp"
-            android:textSize="10dp"
-            android:text="Aggiorna"
             android:background="@color/fui_transparent"
+            android:text="Aggiorna"
+            android:textSize="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="@id/guideline2"
@@ -123,16 +130,16 @@
             android:id="@+id/btnSensor1Data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginLeft="12dp"
-            android:textStyle="bold"
-            android:textSize="24dp"
+            android:layout_marginTop="24dp"
             android:background="@color/fui_transparent"
-            app:layout_constraintStart_toEndOf="parent"
+            android:clickable="false"
+            android:textSize="24dp"
+            android:textStyle="bold"
             app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guideline2"
-            android:clickable="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/guideline2" />
 
 
         <androidx.constraintlayout.widget.Guideline
