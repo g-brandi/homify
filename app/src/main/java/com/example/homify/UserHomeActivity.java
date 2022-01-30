@@ -57,11 +57,11 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
 
     ImageView logo;
 
-    String name;
+    private String name;
 
     TextView txtTitleTip;
     TextView txtTips;
-    TextView hello;
+    private TextView hello;
     private String tip="";
     private String title="";
 
@@ -83,13 +83,13 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
         imageImpostazioni = findViewById(R.id.layout_impostazioni);
 
         hello = findViewById(R.id.txtHello);
-        FirebaseDatabase.getInstance()
+        FirebaseDatabase.getInstance("https://homify-is07-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("users/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         name = snapshot.getValue(Utente.class).getNome();
-                        System.out.println(name);
+                        System.out.println("il nome è" + name);
                         hello.setText("Ciao "+ name);
                     }
 

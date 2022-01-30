@@ -184,6 +184,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:text="Sottotitolo"
+                                android:padding="2sp"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 />
                         </LinearLayout>
