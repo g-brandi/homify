@@ -33,6 +33,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
@@ -43,6 +45,7 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+
     RelativeLayout imageSveglia;
     RelativeLayout imageMeteo;
     RelativeLayout imageTemperatura;
@@ -50,10 +53,15 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
     RelativeLayout imageGrafici;
     RelativeLayout imageImpostazioni;
 
+
+
     ImageView logo;
+
+    String name;
 
     TextView txtTitleTip;
     TextView txtTips;
+    TextView hello;
     private String tip="";
     private String title="";
 
@@ -73,6 +81,23 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
         imageUmidita = findViewById(R.id.layout_umidita);
         imageGrafici = findViewById(R.id.layout_grafici);
         imageImpostazioni = findViewById(R.id.layout_impostazioni);
+
+        hello = findViewById(R.id.txtHello);
+        FirebaseDatabase.getInstance()
+                .getReference("users/"+ FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        name = snapshot.getValue(Utente.class).getNome();
+                        System.out.println(name);
+                        hello.setText("Ciao "+ name);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         //BOTTONE SVEGLIA
         imageSveglia.setOnClickListener(new View.OnClickListener() {
