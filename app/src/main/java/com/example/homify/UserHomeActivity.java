@@ -90,7 +90,7 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         name = snapshot.getValue(Utente.class).getNome();
                         System.out.println("il nome è" + name);
-                        hello.setText("Ciao "+ name);
+                        hello.setText("Ciao, "+ name);
                     }
 
                     @Override

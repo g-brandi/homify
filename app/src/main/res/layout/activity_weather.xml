@@ -88,7 +88,7 @@
 
                     <EditText
                         android:id="@+id/Your_city"
-                        android:layout_width="wrap_content"
+                        android:layout_width="200dp"
                         android:layout_height="match_parent"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
@@ -102,13 +102,13 @@
                         android:textSize="15sp" />
 
                     <ImageView
+                        android:id="@+id/search"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:id="@+id/search"
-                        android:background="?android:attr/selectableItemBackground"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/search_icon"/>
+                        android:background="?android:attr/selectableItemBackground"
+                        android:src="@drawable/search_icon" />
                 </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -175,14 +175,15 @@
                     android:layout_gravity="center_horizontal"/>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50sp"
                     android:orientation="horizontal"
                     android:layout_marginTop="5dp"
-                    android:layout_marginLeft="20dp">
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
                     <TextView
                         android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
                         android:text="Umidità"
                         android:textAllCaps="false"
                         android:layout_gravity="center_vertical"
@@ -191,64 +192,68 @@
                         android:layout_marginStart="5dp"
                         android:textStyle="bold"/>
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:src="@drawable/hum"
                         android:layout_gravity="center"
-                        android:layout_marginStart="38dp"/>
+                        android:scaleType="fitCenter"
+                        android:layout_marginStart="30dp"/>
                     <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:id="@+id/humidity"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="--"
-                        android:layout_marginStart="80dp"
+                        android:layout_marginStart="45dp"
                         android:textColor="@color/black"
                         android:textSize="15sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50sp"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="20dp">
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
                     <TextView
                         android:layout_width="120dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="5dp"
                         android:gravity="start"
-                        android:text="Temperatura minima"
                         android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:text="Temperatura minima"/>
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:src="@drawable/temp_down"
                         android:layout_gravity="center"
-                        android:layout_marginStart="38dp"/>
+                        android:layout_marginStart="30dp"
+                        android:scaleType="fitCenter"/>
                     <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:id="@+id/min_temp"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="--"
-                        android:layout_marginStart="80dp"
+                        android:layout_marginStart="45dp"
                         android:textColor="@color/black"
                         android:textSize="15sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50sp"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="20dp">
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
                     <TextView
                         android:layout_width="120dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="start"
                         android:text="Temperatura massima"
                         android:layout_gravity="center_vertical"
@@ -257,20 +262,21 @@
                         android:layout_marginStart="5dp"
                         android:textStyle="bold"/>
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:src="@drawable/temp_up"
                         android:layout_gravity="center"
-                        android:layout_marginStart="38dp"/>
+                        android:scaleType="fitCenter"
+                        android:layout_marginStart="30dp"/>
                     <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:id="@+id/max_temp"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="--"
-                        android:layout_marginStart="80dp"
+                        android:layout_marginStart="45dp"
                         android:textColor="@color/black"
                         android:textSize="15sp"/>
                 </LinearLayout>

@@ -16,12 +16,20 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/homifyy/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable-anydpi/ic_node.xml" value="0.3728205128205128" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/chart_background_gradient.xml" value="0.34375" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/chart_bg_gradient2.xml" value="0.3728205128205128" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/gradient_background.xml" value="0.3728205128205128" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/graficicon.xml" value="0.34270833333333334" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/home.xml" value="0.3728205128205128" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/hum.xml" value="0.3728205128205128" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_baseline_tag_faces_24.xml" value="0.21875" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_email.xml" value="0.3728205128205128" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_google.xml" value="0.3728205128205128" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_graficiicona.xml" value="0.21875" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_icona_senza_sfondo.xml" value="0.3728205128205128" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_icona_sfondo.xml" value="0.3728205128205128" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_iconaprofiloo.xml" value="0.21875" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_iconlogo.xml" value="0.3728205128205128" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_iconlogodark.xml" value="0.3728205128205128" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_impostazioniicona.xml" value="0.21875" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.21875" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/ic_lock.xml" value="0.21875" />
@@ -35,6 +43,7 @@
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/login.xml" value="0.21875" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/logout.xml" value="0.21875" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/menuicon.xml" value="0.21875" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/meteo.xml" value="0.3728205128205128" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/profilo.xml" value="0.34270833333333334" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/round_bg.xml" value="0.34270833333333334" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/round_border.xml" value="0.34270833333333334" />
@@ -42,6 +51,7 @@
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/search_icon.xml" value="0.34270833333333334" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/sunrise.xml" value="0.34270833333333334" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/sunset.xml" value="0.34270833333333334" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/sveglia.xml" value="0.3728205128205128" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/temp_down.xml" value="0.34270833333333334" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/temp_up.xml" value="0.34270833333333334" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/drawable/termometro.xml" value="0.34270833333333334" />
@@ -58,6 +68,7 @@
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/layout/activity_settings.xml" value="0.3625" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/layout/activity_user_home.xml" value="0.33" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/layout/activity_weather.xml" value="0.33" />
+        <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/layout/activity_webview.xml" value="0.3625" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/layout/header.xml" value="0.3265625" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/menu/main_menu.xml" value="0.3625" />
         <entry key="..\:/Users/DESKTOP/AndroidStudioProjects/homify/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.34270833333333334" />
@@ -86,11 +97,6 @@
         <entry key="..\:/Users/david/AndroidStudioProjects/homify/app/src/main/res/menu/main_menu.xml" value="0.33" />
         <entry key="..\:/Users/david/AndroidStudioProjects/homify/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.17777777777777778" />
         <entry key="..\:/Users/david/AndroidStudioProjects/homify/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.17777777777777778" />
-        <entry key="..\:/Users/giuse/AndroidStudioProjects/homify/app/src/main/res/layout/activity_graphs.xml" value="0.55" />
-        <entry key="..\:/Users/giuse/AndroidStudioProjects/homify/app/src/main/res/layout/activity_sensor1.xml" value="0.55" />
-        <entry key="..\:/Users/giuse/AndroidStudioProjects/homify/app/src/main/res/layout/activity_sensor2.xml" value="0.55" />
-        <entry key="..\:/Users/giuse/AndroidStudioProjects/homify/app/src/main/res/layout/activity_settings.xml" value="0.55" />
-        <entry key="..\:/Users/giuse/AndroidStudioProjects/homify/app/src/main/res/layout/activity_user_home.xml" value="0.55" />
         <entry key="..\:/Users/giuse/StudioProjects/homify/app/src/main/res/layout/activity_sensor1.xml" value="0.15678824721377912" />
       </map>
     </option>
