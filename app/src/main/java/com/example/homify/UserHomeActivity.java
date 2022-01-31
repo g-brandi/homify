@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,8 +54,6 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
     RelativeLayout imageUmidita;
     RelativeLayout imageGrafici;
     RelativeLayout imageImpostazioni;
-
-
 
     ImageView logo;
 
@@ -134,6 +134,7 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
             }
         });
 
+
         //BOTTONE TEMPERATURA
         imageTemperatura.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,7 +196,7 @@ public class UserHomeActivity<OnClick> extends AppCompatActivity implements Navi
                                     if (lastTemperature<30){
                                         tip="Aria di primavera, ti servono le pillole per l'allergia?";
                                         if (lastTemperature<25){
-                                            tip="Aria di primavera, ti servono le pillole per l'allergia?";
+                                            tip="Aria di primavera, servono antistaminici?";
                                             if (lastTemperature<20){
                                                 tip="Inizia a far freddo!";
                                                 if (lastTemperature<15){

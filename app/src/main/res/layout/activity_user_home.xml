@@ -58,8 +58,8 @@
                             android:layout_marginTop="5dp"
                             android:fontFamily="sans-serif"
                             android:text="Meteo"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            />
 
                         <ImageView
                             android:id="@+id/imageView2"
@@ -94,8 +94,7 @@
                             android:layout_marginTop="15dp"
                             android:fontFamily="sans-serif"
                             android:text="Temperatura"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                         <ImageView
                             android:id="@+id/imageView3"
@@ -145,8 +144,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtHello">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardviewTip"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     app:cardCornerRadius="10dp">
@@ -168,7 +168,7 @@
                             app:srcCompat="@drawable/ic_iconlogo" />
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:layout_marginLeft="8sp">
                             <TextView
@@ -182,7 +182,7 @@
                             <TextView
                                 android:id="@+id/txtTips"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:text="Sottotitolo"
                                 android:padding="2sp"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
@@ -225,8 +225,7 @@
                             android:layout_marginTop="5dp"
                             android:fontFamily="sans-serif"
                             android:text="Umidità"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                         <ImageView
                             android:id="@+id/imageView4"
@@ -261,8 +260,7 @@
                             android:layout_marginTop="15dp"
                             android:fontFamily="sans-serif"
                             android:text="Grafici"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                         <ImageView
                             android:id="@+id/imageView5"
@@ -313,8 +311,7 @@
                             android:layout_marginTop="15dp"
                             android:fontFamily="sans-serif"
                             android:text="Profilo"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                         <ImageView
                             android:id="@+id/imageView6"
@@ -348,8 +345,7 @@
                             android:layout_marginTop="15dp"
                             android:fontFamily="sans-serif"
                             android:text="Impostazioni"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                         <ImageView
                             android:id="@+id/imageView7"

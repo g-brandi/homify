@@ -8,4 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gialloscuro">#FF9700</color>
+
+    <color name="darkgray">#3c3c3c</color>
+    <color name="honey_yellow">#ffcc00</color>
 </resources>
